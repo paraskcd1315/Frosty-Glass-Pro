@@ -11,5 +11,6 @@ var loadWidget = {
     },
     init: function(params) {
         this.contentContainer = params.contentContainer;
+        this.loadHome();
     }
 }

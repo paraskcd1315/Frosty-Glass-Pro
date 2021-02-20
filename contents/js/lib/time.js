@@ -160,6 +160,7 @@ var time = {
     init: function(params) {
         this.d = new Date();
         this.twentyfour = params.twentyfour || true;
+        this.zeroPadding = params.zeroPadding || true;
         params.callback(this.funcs);
         setTimeout(function() {
             time.init(params)
