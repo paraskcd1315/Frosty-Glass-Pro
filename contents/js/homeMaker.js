@@ -1,6 +1,6 @@
 var homeMaker = {
     makeFavouriteAppsContainer: function() {
-        
+
     },
     makeSearchContainer: function() {
         let mainDiv = domMaker.init({
@@ -11,7 +11,8 @@ var homeMaker = {
                 type: "input",
                 id: "searchTextField",
                 className: "inputTextField",
-                inputType: "search"
+                attribute: ["type", "search"],
+                attribute2: ["placeholder", "Search.."]
             });
         mainDiv.appendChild(searchInput);
         return mainDiv;

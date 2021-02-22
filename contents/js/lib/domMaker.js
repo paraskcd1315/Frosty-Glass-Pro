@@ -1,4 +1,7 @@
-//Script by Paras Khanchandani https://twitter.com/ParasKCD
+/*
+Inspired by Junesiphone's createDOM.js
+Script by Paras Khanchandani https://twitter.com/ParasKCD 
+*/
 
 var domMaker = {
     element: "",
@@ -22,10 +25,10 @@ var domMaker = {
             this.element.innerHTML = params.innerHTML;
         }
         if(params.attribute) {
-            this.element.setAttribute(attribute[0], attribute[1]);
+            this.element.setAttribute(params.attribute[0], params.attribute[1]);
         }
         if(params.attribute2) {
-            this.element.setAttribute(attribute2[0], attribute2[1]);
+            this.element.setAttribute(params.attribute2[0], params.attribute2[1]);
         }
         return this.element;
     }

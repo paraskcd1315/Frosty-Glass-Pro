@@ -1,3 +1,5 @@
+//taken from Junesiphone's Clock.js Library With some minor changes
+
 var translate = {
     en: {
         greets: ["Good Morning", "Good Afternoon", "Good Evening"],

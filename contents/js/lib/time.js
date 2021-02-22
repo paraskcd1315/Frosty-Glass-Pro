@@ -1,4 +1,7 @@
-//Script by Paras Khanchandani https://twitter.com/ParasKCD
+/*
+Inspired by Junesiphone's Clock JS
+Script by Paras Khanchandani https://twitter.com/ParasKCD
+*/
 
 var time = {
     twentyfour: true,
