@@ -1,4 +1,21 @@
 var homeMaker = {
+    makeFavouriteAppsContainer: function() {
+        
+    },
+    makeSearchContainer: function() {
+        let mainDiv = domMaker.init({
+                type: "div",
+                id: "searchContainer",
+            }),
+            searchInput = domMaker.init({
+                type: "input",
+                id: "searchTextField",
+                className: "inputTextField",
+                inputType: "search"
+            });
+        mainDiv.appendChild(searchInput);
+        return mainDiv;
+    },
     makeTimeContainer: function() {
         let mainDiv = domMaker.init({
                 type: "div",
@@ -22,6 +39,7 @@ var homeMaker = {
             });
         time.init({
             refresh: 1000,
+            twentyfour: api.system.isTwentyFourHourTimeEnabled,
             callback: function(time) {
                 greeter.innerHTML = time.greetings();
                 digitalClock.innerHTML = time.hour() + ":" + time.minute();
@@ -37,6 +55,10 @@ var homeMaker = {
     },
     init: function() {
         let timeContainer = this.makeTimeContainer();
-        loadWidget.contentContainer.appendChild(timeContainer);
+        let searchContainer = this.makeSearchContainer();
+        domMaker.domAppender({
+            div: loadWidget.contentContainer,
+            children: [timeContainer, searchContainer]
+        })
     }
 }
