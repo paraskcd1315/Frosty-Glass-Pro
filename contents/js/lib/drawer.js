@@ -4,14 +4,15 @@ var drawer = {
     searchFlag: false,
     allApplications: api.apps.allApplications,
     drawer: "",
+    header: "",
     close: "",
     search: "",
     content: "",
+    perPage: 24,
     paginator: function(items, page) {
         var page = page || 1,
-            per_page = 24,
-            offset = (page - 1) * per_page,
-            paginatedItems = items.slice(offset).slice(0, per_page);
+            offset = (page - 1) * this.perPage,
+            paginatedItems = items.slice(offset).slice(0, this.perPage);
         return this.displayApps(paginatedItems, page);
     },
     makeDrawer: function() {
@@ -20,6 +21,12 @@ var drawer = {
             id: "drawer",
             className: "closed",
         });
+    },
+    makeHeader: function() {
+        return domMaker.init({
+            type: "div",
+            id: "drawerHeader"
+        })
     },
     makeSearchBar: function() {
         let mainDiv = domMaker.init({
@@ -30,7 +37,8 @@ var drawer = {
                 type: "input",
                 id: "drawerSearchTextField",
                 className: "inputTextField",
-                inputType: "search"
+                attribute: ["type", "search"],
+                attribute2: ["placeholder", "Search Apps.."]
             });
         searchInput.addEventListener("keyup", (e) => this.searchEvent(e));
         mainDiv.appendChild(searchInput);
@@ -75,7 +83,7 @@ var drawer = {
         return drawer.paginator(filteredApps, 1);
     },
     fillPages: function() {
-        let totalPages = Math.ceil(drawer.allApplications.length / per_page);
+        let totalPages = Math.ceil(drawer.allApplications.length / this.perPage);
         for(let i = 0; i < totalPages; i++) {
             let page = drawer.paginator(drawer.allApplications, i+1);
             drawer.content.appendChild(page);
@@ -92,14 +100,23 @@ var drawer = {
     },
     init: function() {
         this.drawer = this.makeDrawer();
+        this.header = this.makeHeader();
         this.close = this.makeCloseButton();
         this.search = this.makeSearchBar();
         this.content = this.makeAppHolder();
         this.fillPages();
         domMaker.domAppender({
+            div: this.header,
+            children: [this.close, this.search]
+        })
+        domMaker.domAppender({
             div: this.drawer,
-            children: [this.close, this.search, this.content]
+            children: [this.header, this.content]
         });
         document.body.appendChild(this.drawer);
+        this.drawer.style.display = "block";
+        setTimeout(() => {
+            drawer.drawer.classList.remove("closed");
+        }, 350)
     }
 }
