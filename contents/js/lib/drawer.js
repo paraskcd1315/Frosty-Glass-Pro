@@ -12,8 +12,7 @@ var drawer = {
             per_page = 24,
             offset = (page - 1) * per_page,
             paginatedItems = items.slice(offset).slice(0, per_page);
-            total_pages = Math.ceil(items.length / per_page);
-        this.displayApps(paginatedItems);
+        return this.displayApps(paginatedItems, page);
     },
     makeDrawer: function() {
         return domMaker.init({
@@ -51,7 +50,7 @@ var drawer = {
                 id: "drawerContent",
         });
     },
-    displayApps: function(filteredApps) {
+    displayApps: function(filteredApps, page) {
         const htmlString = filteredApps.map((app) => {
             return `<div id='${app.identifier}' class='drawerApp'>
                         <img id='${app.identifier}+.icon' src='${app.icon}' class='drawerAppIcon' />
@@ -60,25 +59,35 @@ var drawer = {
                         </div>
                     </div>`
         }).join('');
-        if(this.searchFlag) {
-            this.content.innerHTML = htmlString;
-        } else {
-            this.content.innerHTML += htmlString;
-        }
+        let mainDiv = domMaker.init({
+            type: "div",
+            id: "page" + page,
+            className: "drawerPages",
+            innerHTML: htmlString
+        });
+        return mainDiv;
     },
     searchFunc: function(e) {
         const searchString = e.target.value.toLowerCase();
         const filteredApps = this.allApplications.filter((app) => {
             return (app.name.toLowerCase().includes(searchString));
         });
-        drawer.displayApps(filteredApps);
+        return drawer.paginator(filteredApps, 1);
+    },
+    fillPages: function() {
+        let totalPages = Math.ceil(drawer.allApplications.length / per_page);
+        for(let i = 0; i < totalPages; i++) {
+            let page = drawer.paginator(drawer.allApplications, i+1);
+            drawer.content.appendChild(page);
+        }
     },
     searchEvent: function(e) {
-        loadPage.searchFlag = true;
+        this.searchFlag = true;
+        this.content.innerHTML = "";
         if(e.target.value) {
-            drawer.searchFunc(e);
+            drawer.content.appendChild(drawer.searchFunc(e));
         } else {
-            drawer.paginator(drawer.allApplications, 1);
+            this.fillPages();
         }
     },
     init: function() {
@@ -86,7 +95,7 @@ var drawer = {
         this.close = this.makeCloseButton();
         this.search = this.makeSearchBar();
         this.content = this.makeAppHolder();
-        this.paginator(this.allApplications, 1);
+        this.fillPages();
         domMaker.domAppender({
             div: this.drawer,
             children: [this.close, this.search, this.content]
