@@ -2,7 +2,7 @@
 Script by Paras Khanchandani https://twitter.com/ParasKCD
 
 #Requirements:-
- - taphold.js by junesiphone,
+ - touchhold.js
  - domMaker.js
 */
 
