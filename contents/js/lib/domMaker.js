@@ -1,6 +1,24 @@
 /*
 Inspired by Junesiphone's createDOM.js
-Script by Paras Khanchandani https://twitter.com/ParasKCD 
+Script by Paras Khanchandani https://twitter.com/ParasKCD
+
+#Requirements: -
+ - None
+#Usage: -
+ - To Create HTML Element
+ domMaker.init({
+     type: ,//Enter the type of element you want to create
+     src: ,//For image tags
+     className: ,//For Element's class
+     id: ,//For Element's id
+     innerHTML: ,//For adding html data inside element
+     attribute: ,//For custom Attributes
+ })
+ - To Append multiple items to an HTML Element
+ domMaker.domAppender({
+     div: //Element where to add items,
+     children: []
+ })
 */
 
 var domMaker = {

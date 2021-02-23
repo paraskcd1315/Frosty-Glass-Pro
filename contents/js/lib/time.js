@@ -1,6 +1,21 @@
 /*
 Inspired by Junesiphone's Clock JS
 Script by Paras Khanchandani https://twitter.com/ParasKCD
+
+#Requirements: -
+- localization.js
+- domMaker.js
+#Usage: -
+time.init({
+    refresh: 1000, // How much time to let time refresh in ms (Number)
+    twentyfour: api.system.isTwentyFourHourTimeEnabled, // 24hour or not (Boolean)
+    callback: function(time) { //Check funcs to get your desired Values
+        greeter.innerHTML = time.greetings();
+        digitalClock.innerHTML = time.hour() + ":" + time.minute();
+        day.innerHTML = time.dayText();
+        date.innerHTML = time.date() + " " + time.monthText();
+    }
+});
 */
 
 var time = {
