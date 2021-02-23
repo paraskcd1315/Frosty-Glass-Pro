@@ -186,18 +186,17 @@ var drawer = {
             if(!(drawer.invokeMenu) && !(drawer.movedWhilePressing)) {
                 api.apps.launchApplication(e.target.id);
             }
-            taphold({
-                time: 400,
+            touchHold.init({
+                duration: 400,
                 element: e.target,
-                action: function(element){
+                callback: function(element) {
                     drawer.invokeMenu = true;
                     drawer.checkIfMenuExists();
                     let menu = drawer.makeMenu(element);
                     element.appendChild(menu);
                     setTimeout(() => menu.classList.remove("closed"), 350);
-                },
-                passTarget: true
-            });
+                }
+            })
         }
     },
     init: function() {
