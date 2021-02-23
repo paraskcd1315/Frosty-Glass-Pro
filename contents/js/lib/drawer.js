@@ -1,4 +1,10 @@
-//Script by Paras Khanchandani https://twitter.com/ParasKCD
+/* 
+Script by Paras Khanchandani https://twitter.com/ParasKCD
+
+#Requirements:-
+ - taphold.js by junesiphone,
+ - domMaker.js
+*/
 
 var drawer = {
     searchFlag: false,
@@ -9,12 +15,16 @@ var drawer = {
     search: "",
     content: "",
     perPage: 24,
+    invokeMenu: false,
+    movedWhilePressing: false,
+    //The Pagination Logic
     paginator: function(items, page) {
         var page = page || 1,
             offset = (page - 1) * this.perPage,
             paginatedItems = items.slice(offset).slice(0, this.perPage);
         return this.displayApps(paginatedItems, page);
     },
+    //Create a new DOM for Drawer
     makeDrawer: function() {
         return domMaker.init({
             type: "div",
@@ -22,12 +32,14 @@ var drawer = {
             className: "closed",
         });
     },
+    //Create a new DOM for Header
     makeHeader: function() {
         return domMaker.init({
             type: "div",
             id: "drawerHeader"
         })
     },
+    //Create a new DOM for Searchbar
     makeSearchBar: function() {
         let mainDiv = domMaker.init({
                 type: "div",
@@ -44,6 +56,7 @@ var drawer = {
         mainDiv.appendChild(searchInput);
         return mainDiv;
     },
+    //Create a new DOM for Close Button
     makeCloseButton: function() {
         let mainDiv = domMaker.init({
             type: "div",
@@ -54,12 +67,14 @@ var drawer = {
         mainDiv.addEventListener("click", (e) => this.closeDrawerEvent(e));
         return mainDiv;
     },
+    //Create a new DOM for Containing apps
     makeAppHolder: function() {
         return domMaker.init({
                 type: "div",
                 id: "drawerContent",
         });
     },
+    //Create a new DOM for displaying the apps
     displayApps: function(filteredApps, page) {
         const htmlString = filteredApps.map((app) => {
             return `<div id='${app.identifier}' name='${app.name}' class='drawerApp'>
@@ -75,7 +90,8 @@ var drawer = {
             className: "drawerPages",
             innerHTML: htmlString
         });
-        mainDiv.addEventListener("click", this.appEvent, false);
+        mainDiv.addEventListener("touchend", this.appEvent, false);
+        mainDiv.addEventListener("touchmove", () => this.movedWhilePressing = true, false)
         return mainDiv;
     },
     searchFunc: function(e) {
@@ -109,7 +125,7 @@ var drawer = {
         let mainDiv = domMaker.init({
                 type: 'div',
                 id: element.id + ".Menu",
-                className: "drawerMenu",
+                className: "drawerMenu closed",
             }),
             appName = domMaker.init({
                 type: "div",
@@ -135,21 +151,50 @@ var drawer = {
                 className: "menuButton",
                 innerHTML: "Cancel"
             });
-        //TODO make menuEvents function
-        //mainDiv.addEventListener("click", this.menuEvents, false);
+        mainDiv.addEventListener("touchend", this.menuEvents, false);
         domMaker.domAppender({
             div: mainDiv,
             children: [appName, addApp, deleteApp, cancel]
         });
         return mainDiv;
     },
+    menuEvents: function(e) {
+        if(e.target.className == 'menuButton') {
+            let menu = e.target.parentElement;
+            let app = e.target.parentElement.parentElement;
+            switch(e.target.id) { 
+                case 'deleteApp':
+                    api.apps.deleteApplication(app.id);
+                    break;
+            }
+            menu.classList.add('closed');
+            setTimeout(() => {
+                app.removeChild(menu);
+                drawer.invokeMenu = false;
+            }, 350);  
+        }
+    },
+    checkIfMenuExists: function() {
+        let menu = document.querySelector(".drawerMenu");
+        if(menu) {
+            menu.classList.add('closed');
+            setTimeout(() => menu.parentElement.removeChild(menu), 350);
+        }
+    },
     appEvent: function(e) {
         if(e.target.id && e.target.className == 'drawerApp') {
+            if(!(drawer.invokeMenu) && !(drawer.movedWhilePressing)) {
+                api.apps.launchApplication(e.target.id);
+            }
             taphold({
                 time: 400,
                 element: e.target,
                 action: function(element){
-                    element.appendChild(drawer.makeMenu(element));
+                    drawer.invokeMenu = true;
+                    drawer.checkIfMenuExists();
+                    let menu = drawer.makeMenu(element);
+                    element.appendChild(menu);
+                    setTimeout(() => menu.classList.remove("closed"), 350);
                 },
                 passTarget: true
             });

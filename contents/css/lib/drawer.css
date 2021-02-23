@@ -32,6 +32,10 @@
     transform: translateY(50px);
 }
 
+.drawerMenu.closed {
+    opacity: 0;
+}
+
 #drawer #drawerHeader {
     display: flex;
     height: 75px;
@@ -110,6 +114,7 @@
     width: 75%;
     border-radius: 10px;
     margin-left: 10px;
+    transition: 350ms ease;
 }
 
 #drawer #drawerContent .drawerPages .drawerApp .drawerMenu .menuButton {
