@@ -4,7 +4,6 @@ Script by Paras Khanchandani https://twitter.com/ParasKCD
 
 #Requirements: -
 - localization.js
-- domMaker.js
 #Usage: -
 time.init({
     refresh: 1000, // How much time to let time refresh in ms (Number)
