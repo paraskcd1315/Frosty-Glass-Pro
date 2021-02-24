@@ -122,81 +122,58 @@ var drawer = {
         setTimeout(() => document.body.removeChild(this.drawer), 350);
     },
     makeMenu: function(element) {
-        let mainDiv = domMaker.init({
-                type: 'div',
-                id: element.id + ".Menu",
-                className: "drawerMenu closed",
-            }),
-            appName = domMaker.init({
-                type: "div",
-                id: "appName",
-                className: "drawerHeader",
-                innerHTML: element.getAttribute("name")
-            })
-            addApp = domMaker.init({
-                type: 'div',
-                id: "addApp",
-                className: "menuButton",
-                innerHTML: "Add to Homescreen"
-            }),
-            deleteApp = domMaker.init({
-                type: 'div',
-                id: "deleteApp",
-                className: "menuButton",
-                innerHTML: "Uninstall App"
-            }),
-            cancel = domMaker.init({
-                type: 'div',
-                id: "closeMenu",
-                className: "menuButton",
-                innerHTML: "Cancel"
-            });
-        mainDiv.addEventListener("touchend", this.menuEvents, false);
-        domMaker.domAppender({
-            div: mainDiv,
-            children: [appName, addApp, deleteApp, cancel]
+        menu.init({
+            id: element.id + ".Menu",
+            message: element.getAttribute("name"),
+            menuItems: [
+                {
+                    id: "addApp",
+                    title: "Add to Homescreen",
+                    callback: function() {
+                        drawer.invokeMenu = false;
+                    }
+                },
+                {
+                    id: "deleteApp",
+                    title: "Uninstall App",
+                    callback: function() {
+                        drawer.invokeMenu = false;
+                        api.apps.deleteApplication(element.id);
+                    }
+                },
+                {
+                    id: "closeMenu",
+                    title: "Cancel",
+                    callback: function() {
+                        drawer.invokeMenu = false;
+                    }
+                }
+            ]
         });
-        return mainDiv;
-    },
-    menuEvents: function(e) {
-        if(e.target.className == 'menuButton') {
-            let menu = e.target.parentElement;
-            let app = e.target.parentElement.parentElement;
-            switch(e.target.id) { 
-                case 'deleteApp':
-                    api.apps.deleteApplication(app.id);
-                    break;
-            }
-            menu.classList.add('closed');
-            setTimeout(() => {
-                app.removeChild(menu);
-                drawer.invokeMenu = false;
-            }, 350);  
-        }
     },
     checkIfMenuExists: function() {
-        let menu = document.querySelector(".drawerMenu");
-        if(menu) {
-            menu.classList.add('closed');
-            setTimeout(() => menu.parentElement.removeChild(menu), 350);
+        let theMenu = document.querySelector(".menuWindow");
+        if(theMenu) {
+            menu.closeMenu();
         }
     },
     appEvent: function(e) {
         if(e.target.id && e.target.className == 'drawerApp') {
-            if(!(drawer.invokeMenu) && !(drawer.movedWhilePressing)) {
-                api.apps.launchApplication(e.target.id);
-            }
-            touchHold.init({
-                duration: 400,
-                element: e.target,
-                callback: function(element) {
-                    drawer.invokeMenu = true;
-                    drawer.checkIfMenuExists();
-                    let menu = drawer.makeMenu(element);
-                    element.appendChild(menu);
-                    setTimeout(() => menu.classList.remove("closed"), 350);
+            if(!(drawer.movedWhilePressing)) {
+                if(!(drawer.invokeMenu)) {
+                    api.apps.launchApplication(e.target.id);
                 }
-            })
+                touchHold.init({
+                    duration: 400,
+                    element: e.target,
+                    callback: function(element) {
+                        drawer.invokeMenu = true;
+                        drawer.checkIfMenuExists();
+                        drawer.makeMenu(element);
+                    }
+                });
+            }
+            drawer.movedWhilePressing = false;
         }
     },
     init: function() {
