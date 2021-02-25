@@ -68,8 +68,8 @@ var menu = {
             eventType: params.eventType,
             callback: function() {
                 if(!menu.movedWhilePressing) {
-                    params.callback();
                     menu.closeMenu();
+                    params.callback();
                 }
                 menu.movedWhilePressing = false;
             }
@@ -78,6 +78,7 @@ var menu = {
     closeMenu: function() {
         this.removeEvents();
         this.menu.classList.add("closed");
+        console.log(menu.menu);
         setTimeout(() => {
             document.body.removeChild(menu.menu);
             menu.menu = null;

@@ -17,6 +17,7 @@ var drawer = {
     perPage: 24,
     invokeMenu: false,
     movedWhilePressing: false,
+    appContainer: [],
     //The Pagination Logic
     paginator: function(items, page) {
         var page = page || 1,
@@ -121,6 +122,23 @@ var drawer = {
         this.drawer.classList.add("closed");
         setTimeout(() => document.body.removeChild(this.drawer), 350);
     },
+    addApps: function(appID) {
+        let menuItems = [];
+        for(let i = 0; i < this.appContainer.length; i++) {
+            let appContainerStuff = drawer.appContainer[i];
+            let menuItem = {
+                id: appContainerStuff.id,
+                title: appContainerStuff.title,
+                callback: function() {
+                    drawer.invokeMenu = false;
+                    localstore.addApp(appContainerStuff.id, appID);
+                }
+            }
+            menuItems.push(menuItem);
+        }
+        menuItems.push({id: "closeMenu", title: "Cancel", callback: function(){}});
+        return menuItems;
+    },
     makeMenu: function(element) {
         menu.init({
             id: element.id + ".Menu",
@@ -130,7 +148,13 @@ var drawer = {
                     id: "addApp",
                     title: "Add to Homescreen",
                     callback: function() {
-                        drawer.invokeMenu = false;
+                        setTimeout(() => {
+                            menu.init({
+                                id: element.id + "Add",
+                                message: "Where do you want to add the App?",
+                                menuItems: drawer.addApps(element.id)
+                            });
+                        }, 350*2);
                     }
                 },
                 {
@@ -176,12 +200,13 @@ var drawer = {
             drawer.movedWhilePressing = false;
         }
     },
-    init: function() {
+    init: function(appContainer) {
         this.drawer = this.makeDrawer();
         this.header = this.makeHeader();
         this.close = this.makeCloseButton();
         this.search = this.makeSearchBar();
         this.content = this.makeAppHolder();
+        this.appContainer = appContainer;
         this.fillPages();
         domMaker.domAppender({
             div: this.header,
