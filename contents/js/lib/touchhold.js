@@ -2,8 +2,6 @@
 Inspired by Junesiphone's taphold.js
 Script by Paras Khanchandani https://twitter.com/ParasKCD
 
-#Requirements:-
- - none
 #Usage:-
  touchHold.init({
      duration: 400,
