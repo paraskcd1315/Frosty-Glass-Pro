@@ -4,6 +4,31 @@ Script by Paras Khanchandani https://twitter.com/ParasKCD
 #Requirements:-
  - touchhold.js
  - domMaker.js
+ - localstore.js
+ - menu.js
+ - menu.css
+ - drawer.css
+
+#Usage:-
+drawer.init([
+    {
+        id: //Your div id where you want user to add their own App Shortcuts
+        title: //Any name that will be stored in localStorage
+    }, 
+    //You can add multiple objects for multiple divs
+])
+
+#Example:- 
+drawer.init([
+    {
+        id: 'homeFavs',
+        title: 'Homescreen'
+    },
+    {
+        id: 'dockFavs',
+        title: 'Dock'
+    }
+]);
 */
 
 var drawer = {
