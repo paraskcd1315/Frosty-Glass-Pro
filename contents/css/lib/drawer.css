@@ -112,3 +112,104 @@ html, body {
     font-size: 12px;
     pointer-events: none;
 }
+
+/* iPMini */
+@media only screen 
+and (device-width : 360px) 
+and (device-height : 780px) {
+    .inputTextField {
+        height: 30px;
+    }
+    #drawer #drawerHeader #closeButtonContainer {
+        padding: 5px 10px;
+    }
+    #drawer #drawerHeader {
+        height: 80px;
+    }
+    #drawer #drawerContent {
+        margin-top: 50px;
+    }
+    #drawer #drawerContent .drawerPages {
+        grid-template-rows: 20vw 20vw 20vw 20vw 20vw 25vw;
+        grid-row-gap: 25px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
+        width: 60px;
+        height: 60px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {
+        font-size: 10px;
+    }
+}
+
+/* iP5 */
+@media only screen 
+and (device-width : 320px) 
+and (device-height : 568px) {
+    .inputTextField {
+        height: 30px;
+    }
+    #drawer #drawerHeader #closeButtonContainer {
+        padding: 5px 10px;
+    }
+    #drawer #drawerHeader {
+        height: 80px;
+    }
+    #drawer #drawerContent {
+        margin-top: 25px;
+    }
+    #drawer #drawerContent .drawerPages {
+        grid-template-rows: 20vw 20vw 20vw 20vw 20vw 20vw;
+        grid-row-gap: 10px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
+        width: 40px;
+        height: 40px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {
+        font-size: 10px;
+    }
+}
+
+/* 6s */
+@media only screen 
+and (device-width : 375px) 
+and (device-height : 667px) {
+    #drawer #drawerContent {
+        margin-top: 25px;
+    }
+    #drawer #drawerContent .drawerPages {
+        grid-template-rows: 20vw 20vw 20vw 20vw 20vw 25vw;
+        grid-row-gap: 10px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
+        width: 55px;
+        height: 55px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {
+        font-size: 10px;
+    }
+}
+
+/* 6sPlus */
+@media only screen 
+and (device-width : 414px) 
+and (device-height : 736px) {
+    #drawer #drawerContent {
+        margin-top: 15px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* iPX */
+@media only screen 
+and (device-width : 375px) 
+and (device-height : 812px) {
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
+        width: 60px;
+        height: 60px;
+    }
+}
