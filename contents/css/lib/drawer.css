@@ -213,3 +213,109 @@ and (device-height : 812px) {
         height: 60px;
     }
 }
+
+/*portrait iPad Pro*/
+@media only screen 
+and (device-width : 1024px) 
+and (device-height : 1366px) {
+    .inputTextField {
+        height: 60px;
+    }
+    #drawer #drawerHeader {
+        background-color: transparent;
+        box-shadow: unset;
+        justify-content: center;
+        height: 20vh;
+    }
+    #drawer #drawerHeader #closeButtonContainer {
+        padding: 20px 25px;
+    }
+    #drawer #drawerHeader #drawerSearchContainer {
+        width: 50%;
+        border-radius: 99px;
+    }
+    #drawer #drawerContent .drawerPages {
+        grid-template-columns: 16vw 16vw 16vw 16vw 16vw 16vw;
+        grid-template-rows: 20vw 20vw 20vw 20vw;
+    }
+}
+
+/*landscape iPad Pro*/
+@media only screen 
+and (device-width : 1366px) 
+and (device-height : 1024px) {
+    .inputTextField {
+        height: 60px;
+    }
+    #drawer #drawerHeader {
+        background-color: transparent;
+        box-shadow: unset;
+        justify-content: center;
+        height: 13vh;
+    }
+    #drawer #drawerHeader #closeButtonContainer {
+        padding: 20px 25px;
+    }
+    #drawer #drawerHeader #drawerSearchContainer {
+        width: 50%;
+        border-radius: 99px;
+    }
+    #drawer #drawerContent .drawerPages {
+        grid-template-columns: 16vw 16vw 16vw 16vw 16vw 16vw;
+        grid-template-rows: 15vw 15vw 15vw 15vw;
+    }
+}
+
+/*portrait iPad Third & Fourth Generation, iPad Air 1 & 2, iPad Mini 2 & 3, iPad Mini*/
+@media only screen 
+and (device-width : 768px) 
+and (device-height : 1024px) {
+    .inputTextField {
+        height: 60px;
+    }
+    #drawer #drawerHeader {
+        background-color: transparent;
+        box-shadow: unset;
+        justify-content: center;
+        height: 13vh;
+    }
+    #drawer #drawerHeader #closeButtonContainer {
+        padding: 20px 25px;
+    }
+    #drawer #drawerHeader #drawerSearchContainer {
+        width: 50%;
+        border-radius: 99px;
+    }
+    #drawer #drawerContent .drawerPages {
+        grid-template-columns: 16.5vw 16.5vw 16.5vw 16.5vw 16.5vw 16.5vw;
+    }
+}
+
+/*landscape iPad Third & Fourth Generation, iPad Air 1 & 2, iPad Mini 2 & 3, iPad Mini*/
+@media only screen 
+and (device-width : 1024px) 
+and (device-height : 768px) {
+    .inputTextField {
+        height: 60px;
+    }
+    #drawer #drawerHeader {
+        background-color: transparent;
+        box-shadow: unset;
+        justify-content: center;
+        height: 13vh;
+    }
+    #drawer #drawerHeader #closeButtonContainer {
+        padding: 20px 25px;
+    }
+    #drawer #drawerHeader #drawerSearchContainer {
+        width: 50%;
+        border-radius: 99px;
+    }
+    #drawer #drawerContent {
+        margin-top: 5vh;
+    }
+    #drawer #drawerContent .drawerPages {
+        grid-template-columns: 16.5vw 16.5vw 16.5vw 16.5vw 16.5vw 16.5vw;
+        grid-template-rows: 15vw 15vw 15vw 15vw;
+    }
+}

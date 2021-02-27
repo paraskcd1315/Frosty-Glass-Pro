@@ -1,6 +1,19 @@
 var homeMaker = {
-    makeFavouriteAppsContainer: function() {
-
+    appPages: function(items, page, per_page) {
+        var page = page || 1,
+            per_page = per_page || 8,
+            offset = (page - 1) * per_page,
+            paginatedItems = items.slice(offset).slice(0, per_page),
+            total_pages = Math.ceil(items.length / per_page);
+    },
+    displayApps: function(filteredApps, page) {
+        const htmlString = filteredApps.map((app) => {
+            return `<div id='${app.identifier}' name='${app.name}' class='hsApp'>
+                        <div id='${app.identifier}.badge' class='hsAappBadge'>${app.badge}</div>
+                        <img id='${app.identifier}.icon' src='${app.icon}' class='hsAppIcon' />
+                        <div id='${app.identifier}.name' class='hsAppName'>${app.name}</div>
+                    </div>`
+        }).join('');
     },
     makeSearchContainer: function() {
         let mainDiv = domMaker.init({
@@ -55,6 +68,10 @@ var homeMaker = {
         return mainDiv;
     },
     init: function() {
+        drawer.init([
+            {id: 'homeFavs', title: 'Homescreen'}, 
+            {id: 'dockFavs', title: 'Dock'}
+        ]);
         let timeContainer = this.makeTimeContainer();
         let searchContainer = this.makeSearchContainer();
         domMaker.domAppender({

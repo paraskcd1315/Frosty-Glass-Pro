@@ -20,14 +20,8 @@ drawer.init([
 
 #Example:- 
 drawer.init([
-    {
-        id: 'homeFavs',
-        title: 'Homescreen'
-    },
-    {
-        id: 'dockFavs',
-        title: 'Dock'
-    }
+    {id: 'homeFavs', title: 'Homescreen'},
+    {id: 'dockFavs', title: 'Dock'}
 ]);
 */
 
@@ -67,7 +61,7 @@ var drawer = {
     },
     //Create a new DOM for Searchbar
     makeSearchBar: function() {
-        let mainDiv = domMaker.init({
+        const mainDiv = domMaker.init({
                 type: "div",
                 id: "drawerSearchContainer",
             }),
@@ -84,7 +78,7 @@ var drawer = {
     },
     //Create a new DOM for Close Button
     makeCloseButton: function() {
-        let mainDiv = domMaker.init({
+        const mainDiv = domMaker.init({
             type: "div",
             id: "closeButtonContainer",
             className: "drawerButton",
@@ -128,7 +122,7 @@ var drawer = {
         return drawer.paginator(filteredApps, 1);
     },
     fillPages: function() {
-        let totalPages = Math.ceil(drawer.allApplications.length / this.perPage);
+        const totalPages = Math.ceil(drawer.allApplications.length / this.perPage);
         for(let i = 0; i < totalPages; i++) {
             let page = drawer.paginator(drawer.allApplications, i+1);
             drawer.content.appendChild(page);
