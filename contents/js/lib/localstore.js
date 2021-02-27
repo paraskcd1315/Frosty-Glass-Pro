@@ -1,3 +1,31 @@
+/* 
+Inspired by junesiphone's jstorage.js
+Script by Paras Khanchandani https://twitter.com/ParasKCD
+
+#Usage:-
+
+- Initialization:
+localstore.init({
+    storageName: //some name for storage
+});
+
+- Adding a Value:
+localstore.addValue('someValueName', 'value');
+
+- Removing a Value:
+localstore.removeValue('someValueName');
+
+- XenHTML specific
+    - Adding an app:
+    localstore.addApp('arrayName', 'app');
+
+    - Removing an app:
+    localstore.removeApp('arrayName', 'app');
+
+    - Replacing an app:
+    localstore.replaceApp('arrayName', 'oldApp', 'newApp');
+*/
+
 var localstore = {
     storageName: "",
     storageData: [],
@@ -17,9 +45,7 @@ var localstore = {
         localStorage.setItem(this.storageName, JSON.stringify(storage));
     },
     addApp: function(arrayName, app) {
-        //check if array exists
         if(localstore[arrayName]) {
-            //check if app exists already in that array
             if(localstore[arrayName].indexOf(app) > -1) {
                 alert('App already placed');
                 return;
@@ -42,6 +68,14 @@ var localstore = {
                 this[arrayName][index] = newer;
             }
             this.save();
+        }
+    },
+    removeApp: function(arrayName, app) {
+        let index = localstore[arrayName].indexOf(app);
+        localstore[arrayName].splice(index, 1);
+        this.save();
+        if(localstore[arrayName].length == 0) {
+            localstore.removeValue(arrayName);
         }
     },
     changeAppOrder: function(arrayName, appA, appB) {
