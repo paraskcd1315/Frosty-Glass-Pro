@@ -26,7 +26,7 @@ var time = {
         textDay: translate[current].weekday,
         shortTextDay: translate[current].sday,
         textMonth: translate[current].month,
-        shortTextMonth: translate[current].shortTextMonth,
+        shortTextMonth: translate[current].smonth,
         hour: function() {
             let hour = (time.twentyfour === true) ? time.d.getHours() : (time.d.getHours() + 11) % 12 + 1;
             hour = (time.zeroPadding === true) ? (hour < 10 ? "0" + hour : "" + hour) : hour;

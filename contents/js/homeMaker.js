@@ -31,7 +31,7 @@ var homeMaker = {
                                     ${newData.now.temperature.current} °${newData.units.temperature}
                                 </div>
                                 <div id='condition'>
-                                    ${newData.now.condition.description}
+                                    ${translate[current].condition[newData.now.condition.code]}
                                 </div>
                                 <div id='city'>
                                     ${newData.metadata.address.city}
