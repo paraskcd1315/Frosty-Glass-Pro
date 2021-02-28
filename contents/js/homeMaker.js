@@ -1,7 +1,8 @@
 var homeMaker = {
+    appContainer: [],
     appPages: function(items, page, per_page) {
         var page = page || 1,
-            per_page = per_page || 8,
+            per_page = per_page || 24,
             offset = (page - 1) * per_page,
             paginatedItems = items.slice(offset).slice(0, per_page),
             total_pages = Math.ceil(items.length / per_page);
@@ -15,8 +16,47 @@ var homeMaker = {
                     </div>`
         }).join('');
     },
+    makeWeatherContainer: function() {
+        const mainDiv = domMaker.init({
+            type: "div",
+            id: "weatherContainer",
+        });
+        api.weather.observeData(function(newData){
+            mainDiv.innerHTML = "";
+            let weatherDiv = domMaker.init({
+                    type: "div",
+                    id: "weatherInfo",
+                    className: 'weatherBig',
+                    innerHTML: `<div id='degree'>
+                                    ${newData.now.temperature.current} °${newData.units.temperature}
+                                </div>
+                                <div id='condition'>
+                                    ${newData.now.condition.description}
+                                </div>
+                                <div id='city'>
+                                    ${newData.metadata.address.city}
+                                </div>`
+                }),
+                weatherDiv2 = domMaker.init({
+                    type: "div",
+                    id: "weatherInfo2",
+                    className: 'weatherSmall',
+                    innerHTML: `<div id='icon'>
+                                    <img src='contents/icons/weatherIcons/${newData.now.condition.code}.svg'>
+                                </div>
+                                <div id='condition'>
+                                    ${newData.now.temperature.minimum} °${newData.units.temperature} / ${newData.now.temperature.maximum} °${newData.units.temperature}
+                                </div>`
+                });
+            domMaker.domAppender({
+                div: mainDiv,
+                children: [weatherDiv, weatherDiv2]
+            });
+        });
+        return mainDiv;
+    },
     makeSearchContainer: function() {
-        let mainDiv = domMaker.init({
+        const mainDiv = domMaker.init({
                 type: "div",
                 id: "searchContainer",
             }),
@@ -26,6 +66,10 @@ var homeMaker = {
                 className: "inputTextField",
                 attribute: ["type", "search"],
                 attribute2: ["placeholder", "Search.."]
+            }),
+            searchIcon = domMaker.init({
+                type: 'div',
+                
             });
         mainDiv.appendChild(searchInput);
         return mainDiv;
@@ -68,15 +112,13 @@ var homeMaker = {
         return mainDiv;
     },
     init: function() {
-        drawer.init([
-            {id: 'homeFavs', title: 'Homescreen'}, 
-            {id: 'dockFavs', title: 'Dock'}
-        ]);
+        this.appContainer = localstore['homeFavs'];
         let timeContainer = this.makeTimeContainer();
         let searchContainer = this.makeSearchContainer();
+        let weatherContainer = this.makeWeatherContainer();
         domMaker.domAppender({
             div: loadWidget.contentContainer,
-            children: [timeContainer, searchContainer]
+            children: [timeContainer, searchContainer, weatherContainer]
         })
     }
 }
