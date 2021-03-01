@@ -59,7 +59,7 @@ body {
     box-shadow: var(--shadows);
 }
 
-.mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
+#drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
     content: "";
     position: absolute;
     top: 0;
@@ -126,6 +126,40 @@ body {
     margin-bottom: 10px;
 }
 
-#dockContainer {
-    
+.mainPageContainer #dockContainer {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#dockContainer .appHolder {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+
+}
+
+.appHolder .hsApp img{
+    width: 65px;
+    height: 65px;
+    margin-bottom: 5px;
+    pointer-events: none;
+    border-radius: 10px;
+    box-shadow: var(--shadows);
+}
+
+#drawerContainer {
+    position: fixed;
+    bottom: 0;
+    height: 40px;
+    width: 80%;
+    background-color: var(--search-background);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#drawerContainer:before {
+    border-radius: 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }

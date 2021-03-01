@@ -11,16 +11,16 @@
     <link rel="stylesheet" href="contents/css/style.css">
 </head>
 <body>
-    <div id="wallpaper"></div>
+    <!-- <div id="wallpaper"></div>
     <div id="menuBar">
         <div id="home" class="menuButton">Home</div>
         <div id="music" class="menuButton">Music</div>
         <div id="news" class="menuButton">News</div>
-    </div>
+    </div> -->
     <div id="pageContainer">
         <div class="mainPageContainer"></div>
     </div>
-    <div id="dockContainer"></div>
+    <div id="drawerContainer"></div>
     <script src="contents/js/lib/touchhold.js"></script>
     <script src="contents/js/lib/localization.js"></script>
     <script src="contents/js/lib/time.js"></script>
@@ -32,8 +32,9 @@
     <script src="contents/js/homeMaker.js"></script>
     <script>
         loadWidget.init({
-            contentContainer: document.getElementsByClassName("mainPageContainer")[0]
-        })
+            contentContainer: document.getElementsByClassName("mainPageContainer")[0],
+            drawerContainer: document.getElementById("drawerContainer")
+        });
     </script>
 </body>
 </html>

@@ -13,7 +13,13 @@ var loadWidget = {
         this.contentContainer = params.contentContainer;
         localstore.init({
             storageName: "KCDFrost"
-        })
+        });
+        params.drawerContainer.addEventListener("click", () => {
+            drawer.init([
+                {id: 'homeFavs', title: 'Homescreen'},
+                {id: 'dockFavs', title: 'Dock'}
+            ]);
+        });
         this.loadHome();
     }
 }

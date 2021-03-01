@@ -4,8 +4,8 @@ var homeMaker = {
         var page = page || 1,
             per_page = per_page || 24,
             offset = (page - 1) * per_page,
-            paginatedItems = items.slice(offset).slice(0, per_page),
-            total_pages = Math.ceil(items.length / per_page);
+            paginatedItems = items.slice(offset).slice(0, per_page);
+        return this.displayApps(paginatedItems, page);
     },
     displayApps: function(filteredApps, page) {
         const htmlString = filteredApps.map((app) => {
@@ -14,7 +14,38 @@ var homeMaker = {
                         <img id='${app.identifier}.icon' src='${app.icon}' class='hsAppIcon' />
                         <div id='${app.identifier}.name' class='hsAppName'>${app.name}</div>
                     </div>`
-        }).join('');
+        }).join(''),
+            mainDiv = domMaker.init({
+                type: "div",
+                className: "appHolder",
+                id: "appHolder" + page,
+                innerHTML: htmlString
+            });
+        return mainDiv;
+    },
+    makeDockContainer: function() {
+        const mainDiv = domMaker.init({
+                type: "div",
+                className: "dockFavs",
+                id: "dockContainer",
+            });
+        api.apps.observeData(function(newData) {
+            mainDiv.innerHTML = "";
+            if(localstore["dockFavs"]) {
+                let appIDs = localstore["dockFavs"];
+                let totalPages = Math.ceil(appIDs / 4);
+                let dockApps = [];
+                for(let i = 0; i < appIDs.length; i++) {
+                    dockApps.push(newData.applicationForIdentifier(appIDs[i]));
+                }
+                for(let i = 0; i < totalPages; i++) {
+                    mainDiv.appendChild(homeMaker.appPages(dockApps, i+1, 4));
+                }
+            } else {
+                mainDiv.innerHTML = "Please, add App Shortcuts from Drawer!";
+            }
+        });
+        return mainDiv;
     },
     makeWeatherContainer: function() {
         const mainDiv = domMaker.init({
@@ -116,9 +147,10 @@ var homeMaker = {
         let timeContainer = this.makeTimeContainer();
         let searchContainer = this.makeSearchContainer();
         let weatherContainer = this.makeWeatherContainer();
+        let dockContainer = this.makeDockContainer();
         domMaker.domAppender({
             div: loadWidget.contentContainer,
-            children: [timeContainer, searchContainer, weatherContainer]
+            children: [timeContainer, searchContainer, weatherContainer, dockContainer]
         })
     }
 }
