@@ -33,7 +33,7 @@ body {
     scroll-snap-align: center;
     position: absolute;
     bottom: 0px;
-    transform: translateY(-20vh);
+    transform: translateY(-5vh);
     width: 90vw;
     display: flex;
     flex-direction: column;
@@ -54,12 +54,12 @@ body {
     position: relative;
     background-color: var(--search-background);
     padding-left: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-top: 20px;
     box-shadow: var(--shadows);
 }
 
-#drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
+.hsApp .hsAappBadge:before, #drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
     content: "";
     position: absolute;
     top: 0;
@@ -69,11 +69,11 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     z-index: -1;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 #searchTextField {
-    height: 6.5vh;
+    height: 6vh;
 }
 
 #searchTextField::-webkit-input-placeholder, #searchTextField::placeholder {
@@ -95,7 +95,7 @@ body {
     flex-direction: column;
     padding: 10px;
     background-color: var(--search-background);
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: var(--shadows);
     height: 12vh;   
 }
@@ -127,23 +127,45 @@ body {
 }
 
 .mainPageContainer #dockContainer {
-    display: flex;
-    flex-direction: column-reverse;
+     display: flex;
+     flex-direction: row;
+     flex-wrap: wrap;
+     justify-content: center;
+     margin-top: 25px;
+     text-align: center;
 }
 
-#dockContainer .appHolder {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-
+.hsApp {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 15px;
+    flex: 1;
 }
 
-.appHolder .hsApp img{
-    width: 65px;
-    height: 65px;
+.hsApp img{
+    width: 50px;
+    height: 50px;
     margin-bottom: 5px;
     pointer-events: none;
     border-radius: 10px;
     box-shadow: var(--shadows);
+}
+
+.hsApp .hsAappBadge {
+    position: absolute;
+    background-color: var(--search-background);
+    padding: 5px 10px;
+    z-index: 3;
+    border-radius: 10px;
+    margin-left: -10px;
+    margin-top: -10px;
+    box-shadow: var(--shadows);
+}
+
+.hsApp .hsAppName {
+    margin-bottom: 5px;
+    font-size: 12px;
+    pointer-events: none;
 }
 
 #drawerContainer {
@@ -156,10 +178,11 @@ body {
     border-top-right-radius: 5px;
     left: 50%;
     transform: translateX(-50%);
+    box-shadow:  0px -5px 10px #1a1b1ca0;
 }
 
 #drawerContainer:before {
     border-radius: 0px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }

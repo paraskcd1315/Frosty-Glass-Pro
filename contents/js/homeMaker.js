@@ -7,21 +7,27 @@ var homeMaker = {
             paginatedItems = items.slice(offset).slice(0, per_page);
         return this.displayApps(paginatedItems, page);
     },
-    displayApps: function(filteredApps, page) {
+    displayApps: function(filteredApps) {
         const htmlString = filteredApps.map((app) => {
+            let badgeDiv = ``;
+            if(app.badge || app.badge !== '') {
+                badgeDiv = `<div id='${app.identifier}.badge' class='hsAappBadge'>${app.badge}</div>`
+            }
             return `<div id='${app.identifier}' name='${app.name}' class='hsApp'>
-                        <div id='${app.identifier}.badge' class='hsAappBadge'>${app.badge}</div>
+                        ${badgeDiv}
                         <img id='${app.identifier}.icon' src='${app.icon}' class='hsAppIcon' />
                         <div id='${app.identifier}.name' class='hsAppName'>${app.name}</div>
                     </div>`
-        }).join(''),
-            mainDiv = domMaker.init({
-                type: "div",
-                className: "appHolder",
-                id: "appHolder" + page,
-                innerHTML: htmlString
-            });
-        return mainDiv;
+        }).join('');
+        return htmlString;
+    },
+    populateDockContainer: function(mainDiv, newData) {
+        let appIDs = localstore["dockFavs"];
+        let dockApps = [];
+        for(let i = 0; i < appIDs.length; i++) {
+            dockApps.push(newData.applicationForIdentifier(appIDs[i]));
+        }
+        mainDiv.innerHTML = homeMaker.displayApps(dockApps);
     },
     makeDockContainer: function() {
         const mainDiv = domMaker.init({
@@ -29,36 +35,82 @@ var homeMaker = {
                 className: "dockFavs",
                 id: "dockContainer",
             });
-        api.apps.observeData(function(newData) {
-            mainDiv.innerHTML = "";
-            if(localstore["dockFavs"]) {
-                let appIDs = localstore["dockFavs"];
-                let totalPages = Math.ceil(appIDs / 4);
-                let dockApps = [];
-                for(let i = 0; i < appIDs.length; i++) {
-                    dockApps.push(newData.applicationForIdentifier(appIDs[i]));
-                }
-                for(let i = 0; i < totalPages; i++) {
-                    mainDiv.appendChild(homeMaker.appPages(dockApps, i+1, 4));
-                }
-            } else {
-                mainDiv.innerHTML = "Please, add App Shortcuts from Drawer!";
+        if(localstore["dockFavs"]) {
+            api.apps.observeData(function(newData) {
+                homeMaker.populateDockContainer(mainDiv, newData);
+            });
+        } else {
+            mainDiv.innerHTML = "Please, add App Shortcuts from Drawer!";
+        }
+        mainDiv.addEventListener('touchend', function(el) {
+            var bundle = el.target.id;
+            drawer.openApp(bundle);
+            if(el.target.className === 'hsApp') {
+                setTimeout(function(){
+                    drawer.animateIcon(false, el.target.id);
+                }, 100);
             }
+            drawer.movedWhilePressing = false;
+        });
+        mainDiv.addEventListener('touchstart', drawer.animateApp, false);
+        mainDiv.addEventListener('touchmove', () => drawer.movedWhilePressing = true, false);
+        taphold({
+            time: 400,
+            element: mainDiv,
+            action: function(el) {
+                homeMaker.tapHoldOnIcon(el);
+            },
+            passTarget: true
         });
         return mainDiv;
     },
+    tapHoldOnIcon: function(el) {
+        drawer.invokeMenu = true;
+        drawer.checkIfMenuExists();
+        homeMaker.makeMenu(el);
+    },
+    makeMenu: function(el) {
+        menu.init({
+            id: el.id + ".Menu",
+            message: el.getAttribute("name"),
+            menuItems: [
+                {
+                    id: "removeApp",
+                    title: "Remove App from Homescreen",
+                    callback: function() {
+                        drawer.invokeMenu = false;
+                        localstore.removeApp('dockFavs', el.id);
+                        let appContainer = el.parentElement;
+                        homeMaker.populateDockContainer(appContainer, api.apps);
+                    }
+                },
+                {
+                    id: "closeMenu",
+                    title: "Cancel",
+                    callback: function() {
+                        drawer.invokeMenu = false;
+                    }
+                }
+            ]
+        });
+    },
     makeWeatherContainer: function() {
         const mainDiv = domMaker.init({
-            type: "div",
-            id: "weatherContainer",
-        });
-        api.weather.observeData(function(newData){
-            mainDiv.innerHTML = "";
-            let weatherDiv = domMaker.init({
-                    type: "div",
-                    id: "weatherInfo",
-                    className: 'weatherBig',
-                    innerHTML: `<div id='degree'>
+                type: "div",
+                id: "weatherContainer",
+            }),
+            weatherDiv = domMaker.init({
+                type: "div",
+                id: "weatherInfo",
+                className: 'weatherBig'
+            }),
+            weatherDiv2 = domMaker.init({
+                type: "div",
+                id: "weatherInfo2",
+                className: 'weatherSmall'
+            });
+        api.weather.observeData(function(newData) {
+            weatherDiv.innerHTML = `<div id='degree'>
                                     ${newData.now.temperature.current} °${newData.units.temperature}
                                 </div>
                                 <div id='condition'>
@@ -66,24 +118,19 @@ var homeMaker = {
                                 </div>
                                 <div id='city'>
                                     ${newData.metadata.address.city}
-                                </div>`
-                }),
-                weatherDiv2 = domMaker.init({
-                    type: "div",
-                    id: "weatherInfo2",
-                    className: 'weatherSmall',
-                    innerHTML: `<div id='icon'>
+                                </div>`;
+            weatherDiv2.innerHTML = `<div id='icon'>
                                     <img src='contents/icons/weatherIcons/${newData.now.condition.code}.svg'>
                                 </div>
                                 <div id='condition'>
                                     ${newData.now.temperature.minimum} °${newData.units.temperature} / ${newData.now.temperature.maximum} °${newData.units.temperature}
-                                </div>`
-                });
-            domMaker.domAppender({
-                div: mainDiv,
-                children: [weatherDiv, weatherDiv2]
-            });
+                                </div>`;
         });
+        domMaker.domAppender({
+            div: mainDiv,
+            children: [weatherDiv, weatherDiv2]
+        });
+        
         return mainDiv;
     },
     makeSearchContainer: function() {

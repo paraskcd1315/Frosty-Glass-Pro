@@ -16,8 +16,7 @@ var loadWidget = {
         });
         params.drawerContainer.addEventListener("click", () => {
             drawer.init([
-                {id: 'homeFavs', title: 'Homescreen'},
-                {id: 'dockFavs', title: 'Dock'}
+                {id: 'dockFavs', title: 'Dock', limit: 8}
             ]);
         });
         this.loadHome();

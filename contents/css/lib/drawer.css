@@ -5,6 +5,11 @@
 
 html, body {
     font-family: 'Manrope', Arial, Helvetica, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-overflow-scrolling: touch;
 }
 
 :root {

@@ -2,7 +2,7 @@
 Script by Paras Khanchandani https://twitter.com/ParasKCD
 
 #Requirements:-
- - touchhold.js
+ - taphold.js by junesiphone
  - domMaker.js
  - localstore.js
  - menu.js
@@ -59,6 +59,30 @@ var drawer = {
             id: "drawerHeader"
         })
     },
+    animateIcon: function(on, bundle) {
+        if(bundle) {
+            var grow = 1.2,
+                standard = 1.0,
+                el = document.getElementById(bundle);
+    
+            el.style.transition = "transform 350ms ease-in-out";
+    
+            if(on) {
+                el.style.transform = "scale(" + grow + ")";
+                el.style.zIndex = "2";
+                el.style.webkitTransform = "scale(" + grow + ")";
+            } else {
+                el.style.transform = "scale(" + standard + ")";
+                el.style.zIndex = "2";
+                el.style.webkitTransform = "scale(" + standard + ")";
+            }
+        }
+    },
+    animateApp: function(el) {
+        if(el.target.id && !drawer.movedWhilePressing) {
+            drawer.animateIcon(true, el.target.id);
+        }
+    },
     //Create a new DOM for Searchbar
     makeSearchBar: function() {
         const mainDiv = domMaker.init({
@@ -110,9 +134,37 @@ var drawer = {
             className: "drawerPages",
             innerHTML: htmlString
         });
-        mainDiv.addEventListener("touchend", this.appEvent, false);
-        mainDiv.addEventListener("touchmove", () => this.movedWhilePressing = true, false)
+        mainDiv.addEventListener('touchend', function(el) {
+            var bundle = el.target.id;
+            drawer.openApp(bundle);
+            if(el.target.className === 'drawerApp') {
+                setTimeout(function(){
+                    drawer.animateIcon(false, el.target.id);
+                }, 100);
+            }
+            drawer.movedWhilePressing = false;
+        });
+        mainDiv.addEventListener('touchstart', drawer.animateApp, false);
+        mainDiv.addEventListener('touchmove', () => drawer.movedWhilePressing = true, false);
+        taphold({
+            time: 400,
+            element: mainDiv,
+            action: function(el) {
+                drawer.tapHoldOnIcon(el);
+            },
+            passTarget: true
+        });
         return mainDiv;
+    },
+    tapHoldOnIcon: function(el) {
+        drawer.invokeMenu = true;
+        drawer.checkIfMenuExists();
+        drawer.makeMenu(el);
+    },
+    openApp: function(bundle) {
+        if(bundle && !drawer.invokeMenu && !drawer.movedWhilePressing) {
+            api.apps.launchApplication(bundle);
+        }
     },
     searchFunc: function(e) {
         const searchString = e.target.value.toLowerCase();
@@ -150,7 +202,13 @@ var drawer = {
                 title: appContainerStuff.title,
                 callback: function() {
                     drawer.invokeMenu = false;
-                    localstore.addApp(appContainerStuff.id, appID);
+                    if(!localstore[appContainerStuff.id] || appContainerStuff.limit !== localstore[appContainerStuff.id].length) {
+                        let appContainer = document.getElementsByClassName(appContainerStuff.id)[0]
+                        localstore.addApp(appContainerStuff.id, appID);
+                        homeMaker.populateDockContainer(appContainer, api.apps);
+                    } else {
+                        alert("Can't add more apps!");
+                    }
                 }
             }
             menuItems.push(menuItem);
@@ -198,25 +256,6 @@ var drawer = {
         let theMenu = document.querySelector(".menuWindow");
         if(theMenu) {
             menu.closeMenu();
-        }
-    },
-    appEvent: function(e) {
-        if(e.target.id && e.target.className == 'drawerApp') {
-            if(!(drawer.movedWhilePressing)) {
-                if(!(drawer.invokeMenu)) {
-                    api.apps.launchApplication(e.target.id);
-                }
-                touchHold.init({
-                    duration: 400,
-                    element: e.target,
-                    callback: function(element) {
-                        drawer.invokeMenu = true;
-                        drawer.checkIfMenuExists();
-                        drawer.makeMenu(element);
-                    }
-                });
-            }
-            drawer.movedWhilePressing = false;
         }
     },
     init: function(appContainer) {
