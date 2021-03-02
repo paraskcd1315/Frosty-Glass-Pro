@@ -16,7 +16,12 @@ var loadWidget = {
         });
         params.drawerContainer.addEventListener("click", () => {
             drawer.init([
-                {id: 'dockFavs', title: 'Dock', limit: 8}
+                {
+                    id: 'dockFavs', 
+                    title: 'Dock', 
+                    limit: 8, 
+                    callback: (mainDiv) => homeMaker.populateDockContainer(mainDiv, api.apps)
+                }
             ]);
         });
         this.loadHome();

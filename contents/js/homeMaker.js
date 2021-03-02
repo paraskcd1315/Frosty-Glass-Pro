@@ -22,12 +22,16 @@ var homeMaker = {
         return htmlString;
     },
     populateDockContainer: function(mainDiv, newData) {
-        let appIDs = localstore["dockFavs"];
-        let dockApps = [];
-        for(let i = 0; i < appIDs.length; i++) {
-            dockApps.push(newData.applicationForIdentifier(appIDs[i]));
+        if(localstore["dockFavs"]) {
+            let appIDs = localstore["dockFavs"];
+            let dockApps = [];
+            for(let i = 0; i < appIDs.length; i++) {
+                dockApps.push(newData.applicationForIdentifier(appIDs[i]));
+            }
+            mainDiv.innerHTML = homeMaker.displayApps(dockApps);
+        } else {
+            mainDiv.innerHTML = "<div id='noApps'>Please, add App Shortcuts from Drawer!</div>";
         }
-        mainDiv.innerHTML = homeMaker.displayApps(dockApps);
     },
     makeDockContainer: function() {
         const mainDiv = domMaker.init({
@@ -35,13 +39,9 @@ var homeMaker = {
                 className: "dockFavs",
                 id: "dockContainer",
             });
-        if(localstore["dockFavs"]) {
-            api.apps.observeData(function(newData) {
-                homeMaker.populateDockContainer(mainDiv, newData);
-            });
-        } else {
-            mainDiv.innerHTML = "Please, add App Shortcuts from Drawer!";
-        }
+        api.apps.observeData(function(newData) {
+            homeMaker.populateDockContainer(mainDiv, newData);
+        });
         mainDiv.addEventListener('touchend', function(el) {
             var bundle = el.target.id;
             drawer.openApp(bundle);

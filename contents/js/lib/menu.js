@@ -78,7 +78,6 @@ var menu = {
     closeMenu: function() {
         this.removeEvents();
         this.menu.classList.add("closed");
-        console.log(menu.menu);
         setTimeout(() => {
             document.body.removeChild(menu.menu);
             menu.menu = null;

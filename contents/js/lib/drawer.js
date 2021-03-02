@@ -12,17 +12,31 @@ Script by Paras Khanchandani https://twitter.com/ParasKCD
 #Usage:-
 drawer.init([
     {
-        id: //Your div id where you want user to add their own App Shortcuts
+        id: //Your div className where you want user to add their own App Shortcuts
         title: //Any name that will be stored in localStorage
+        limit: //Limit for number of apps you want a div to hold
+        callback: (element) => //function to update apps in that div(element, api.apps)
     }, 
     //You can add multiple objects for multiple divs
 ])
 
 #Example:- 
-drawer.init([
-    {id: 'homeFavs', title: 'Homescreen'},
-    {id: 'dockFavs', title: 'Dock'}
-]);
+params.drawerContainer.addEventListener("click", () => {
+    drawer.init([
+        {
+            id: 'dockFavs', 
+            title: 'Dock', 
+            limit: 8, 
+            callback: (mainDiv) => homeMaker.populateDockContainer(mainDiv, api.apps)
+        },
+        {
+            id: 'homeFavs',
+            title: 'HomeScreen',
+            limit: 25,
+            callback: (mainDiv) => homeMaker.populateHomeAppsContainer(mainDiv, api.apps)
+        }
+    ]);
+});
 */
 
 var drawer = {
@@ -79,7 +93,7 @@ var drawer = {
         }
     },
     animateApp: function(el) {
-        if(el.target.id && !drawer.movedWhilePressing) {
+        if((el.target.className === "drawerApp" || el.target.className === 'hsApp') && !drawer.movedWhilePressing) {
             drawer.animateIcon(true, el.target.id);
         }
     },
@@ -157,9 +171,11 @@ var drawer = {
         return mainDiv;
     },
     tapHoldOnIcon: function(el) {
-        drawer.invokeMenu = true;
-        drawer.checkIfMenuExists();
-        drawer.makeMenu(el);
+        if(el.className === "drawerApp") {
+            drawer.invokeMenu = true;
+            drawer.checkIfMenuExists();
+            drawer.makeMenu(el);
+        }
     },
     openApp: function(bundle) {
         if(bundle && !drawer.invokeMenu && !drawer.movedWhilePressing) {
@@ -205,7 +221,7 @@ var drawer = {
                     if(!localstore[appContainerStuff.id] || appContainerStuff.limit !== localstore[appContainerStuff.id].length) {
                         let appContainer = document.getElementsByClassName(appContainerStuff.id)[0]
                         localstore.addApp(appContainerStuff.id, appID);
-                        homeMaker.populateDockContainer(appContainer, api.apps);
+                        appContainerStuff.callback(appContainer);
                     } else {
                         alert("Can't add more apps!");
                     }
@@ -231,7 +247,7 @@ var drawer = {
                                 message: "Where do you want to add the App?",
                                 menuItems: drawer.addApps(element.id)
                             });
-                        }, 350*2);
+                        }, 400);
                     }
                 },
                 {

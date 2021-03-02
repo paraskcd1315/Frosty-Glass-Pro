@@ -43,6 +43,7 @@ body {
 .mainPageContainer #timeContainer{
     display: flex;
     flex-direction: column;
+    margin: 0 20px;
 }
 
 .mainPageContainer #timeContainer #digitalClock {
@@ -55,6 +56,7 @@ body {
     background-color: var(--search-background);
     padding-left: 10px;
     border-radius: 10px;
+    margin: 0 20px;
     margin-top: 20px;
     box-shadow: var(--shadows);
 }
@@ -73,7 +75,7 @@ body {
 }
 
 #searchTextField {
-    height: 6vh;
+    height: 5vh;
 }
 
 #searchTextField::-webkit-input-placeholder, #searchTextField::placeholder {
@@ -85,8 +87,9 @@ body {
 .mainPageContainer #weatherContainer {
     display: flex;
     flex-direction: row;
+    margin: 0 20px;
     margin-top: 20px;
-    width: 100%;
+    width: 90%;
 }
 
 #weatherContainer .weatherBig, #weatherContainer .weatherSmall {
@@ -97,7 +100,7 @@ body {
     background-color: var(--search-background);
     border-radius: 10px;
     box-shadow: var(--shadows);
-    height: 12vh;   
+    height: 10.5vh;   
 }
 
 #weatherContainer .weatherBig {
@@ -115,11 +118,12 @@ body {
     margin-left: 5%;
     text-align: center;
     justify-content: center;
+    font-size: 3vw;
 }
 
 #weatherContainer .weatherSmall #icon {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     filter: invert() drop-shadow(0px 2px 5px #000a);
     margin-left: auto;
     margin-right: auto;
@@ -135,11 +139,18 @@ body {
      text-align: center;
 }
 
+.mainPageContainer #dockContainer #noApps {
+    margin-bottom: 20px;
+    color: #fff3;
+    text-shadow: 0 0 10px #fffa;
+}
+
 .hsApp {
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 15px;
-    flex: 1;
+    position: relative;
+   width: 80px;
+   height: 100px;
+   margin-left: 5px;
+   margin-right: 5px;
 }
 
 .hsApp img{
@@ -153,12 +164,13 @@ body {
 
 .hsApp .hsAappBadge {
     position: absolute;
+    width: 20px;
+    left: -10px;
+    top: -10px;
     background-color: var(--search-background);
-    padding: 5px 10px;
+    padding: 5px;
     z-index: 3;
     border-radius: 10px;
-    margin-left: -10px;
-    margin-top: -10px;
     box-shadow: var(--shadows);
 }
 
@@ -174,8 +186,8 @@ body {
     height: 40px;
     width: 80%;
     background-color: var(--search-background);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     left: 50%;
     transform: translateX(-50%);
     box-shadow:  0px -5px 10px #1a1b1ca0;
