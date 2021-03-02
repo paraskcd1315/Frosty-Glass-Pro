@@ -20,7 +20,10 @@ var loadWidget = {
                     id: 'dockFavs', 
                     title: 'Dock', 
                     limit: 8, 
-                    callback: (mainDiv) => homeMaker.populateDockContainer(mainDiv, api.apps)
+                    callback: (mainDiv) => {
+                        homeMaker.populateDockContainer(mainDiv, api.apps);
+                        homeMaker.checkToHide();
+                    }
                 }
             ]);
         });

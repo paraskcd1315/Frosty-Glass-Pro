@@ -33,7 +33,7 @@ body {
     scroll-snap-align: center;
     position: absolute;
     bottom: 0px;
-    transform: translateY(-5vh);
+    transform: translateY(-7vh);
     width: 90vw;
     display: flex;
     flex-direction: column;
@@ -45,6 +45,12 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0 20px;
+    transform: translateY(14vh);
+    transition: 350ms ease;
+}
+
+.mainPageContainer #timeContainer.closed {
+    transform: translateY(0px);
 }
 
 .mainPageContainer #timeContainer #digitalClock {
@@ -60,6 +66,12 @@ body {
     margin: 0 20px;
     margin-top: 20px;
     box-shadow: var(--shadows);
+    transform: translateY(14vh);
+    transition: 350ms ease;
+}
+
+.mainPageContainer #searchContainer.closed {
+    transform: translateY(0px);
 }
 
 .hsApp .hsAappBadge:before, #drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
@@ -91,6 +103,12 @@ body {
     margin: 0 20px;
     margin-top: 20px;
     width: 90%;
+    transition: 350ms ease;
+}
+
+.mainPageContainer #weatherContainer.closed {
+    opacity: 0;
+    pointer-events: none;
 }
 
 #weatherContainer .weatherBig, #weatherContainer .weatherSmall {
@@ -146,11 +164,12 @@ body {
 }
 
 .hsApp {
-    position: relative;
+   position: relative;
    width: 80px;
    height: 100px;
    margin-left: 5px;
    margin-right: 5px;
+   transition: 350ms ease;
 }
 
 .hsApp img{
@@ -191,6 +210,10 @@ body {
     left: 50%;
     transform: translateX(-50%);
     box-shadow:  0px -5px 10px #1a1b1ca0;
+}
+
+#drawerContainer #something {
+    margin-top: -30px;
 }
 
 #drawerContainer:before {

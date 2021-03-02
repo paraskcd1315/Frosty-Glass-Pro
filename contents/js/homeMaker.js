@@ -36,7 +36,7 @@ var homeMaker = {
     makeDockContainer: function() {
         const mainDiv = domMaker.init({
                 type: "div",
-                className: "dockFavs",
+                className: "dockFavs closed",
                 id: "dockContainer",
             });
         api.apps.observeData(function(newData) {
@@ -79,6 +79,7 @@ var homeMaker = {
                         drawer.invokeMenu = false;
                         localstore.removeApp('dockFavs', el.id);
                         let appContainer = el.parentElement;
+                        homeMaker.checkToHide();
                         homeMaker.populateDockContainer(appContainer, api.apps);
                     }
                 },
@@ -96,6 +97,7 @@ var homeMaker = {
         const mainDiv = domMaker.init({
                 type: "div",
                 id: "weatherContainer",
+                className: "closed"
             }),
             weatherDiv = domMaker.init({
                 type: "div",
@@ -134,7 +136,7 @@ var homeMaker = {
     makeSearchContainer: function() {
         const mainDiv = domMaker.init({
                 type: "div",
-                id: "searchContainer",
+                id: "searchContainer"
             }),
             searchInput = domMaker.init({
                 type: "input",
@@ -169,7 +171,7 @@ var homeMaker = {
         }
     },
     resetMoveUp: function(event) {
-        event.target.parentElement.parentElement.style.transform = `translateY(-5vh)`;
+        event.target.parentElement.parentElement.style.transform = `translateY(-7vh)`;
     },
     makeTimeContainer: function() {
         let mainDiv = domMaker.init({
@@ -192,21 +194,59 @@ var homeMaker = {
                 type: "div",
                 id: "date"
             });
-        time.init({
-            refresh: 1000,
-            twentyfour: api.system.isTwentyFourHourTimeEnabled,
-            callback: function(time) {
-                greeter.innerHTML = time.greetings();
-                digitalClock.innerHTML = time.hour() + ":" + time.minute();
-                day.innerHTML = time.dayText();
-                date.innerHTML = time.date() + " " + time.monthText();
-            }
+        api.system.observeData(function(newData) {
+            time.init({
+                refresh: 1000,
+                twentyfour: newData.isTwentyFourHourTimeEnabled,
+                callback: function(time) {
+                    greeter.innerHTML = time.greetings();
+                    digitalClock.innerHTML = time.hour() + ":" + time.minute();
+                    day.innerHTML = time.dayText();
+                    date.innerHTML = time.date() + " " + time.monthText();
+                }
+            });
         });
+        mainDiv.addEventListener("click", (e) => {
+            if(!(e.target.parentElement.id === loadWidget.contentContainer.id)) {
+                e.target.parentElement.classList.toggle("closed");
+                e.target.parentElement.nextElementSibling.classList.toggle("closed");
+                e.target.parentElement.nextElementSibling.nextElementSibling.classList.toggle("closed");
+                e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
+            } else {
+                e.target.classList.toggle("closed");
+                e.target.nextElementSibling.classList.toggle("closed");
+                e.target.nextElementSibling.nextElementSibling.classList.toggle("closed");
+                e.target.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
+            }
+            homeMaker.checkToHide();
+        })
         domMaker.domAppender({
             div: mainDiv,
             children: [greeter, digitalClock, day, date]
         });
         return mainDiv;
+    },
+    checkToHide: function() {
+        if(localstore["dockFavs"]) {
+            let dockHide = domMaker.init({
+                type: "style",
+                id: "hideDock",
+                innerHTML: `
+                .mainPageContainer #dockContainer.closed .hsApp:nth-last-child(-n+4) {
+                    opacity: 0;
+                    display: none;
+                }`
+            });
+            if(localstore["dockFavs"].length > 4) {  
+                if(!document.body.contains(document.getElementById("hideDock"))) {
+                    document.body.appendChild(dockHide);
+                }
+            } else {
+                if(document.body.contains(dockHide)) {
+                    document.body.removeChild(dockHide);
+                }
+            }
+        } 
     },
     init: function() {
         this.appContainer = localstore['homeFavs'];
@@ -217,6 +257,7 @@ var homeMaker = {
         domMaker.domAppender({
             div: loadWidget.contentContainer,
             children: [timeContainer, searchContainer, weatherContainer, dockContainer]
-        })
+        });
+        homeMaker.checkToHide();
     }
 }
