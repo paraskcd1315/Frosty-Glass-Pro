@@ -43,8 +43,7 @@ var homeMaker = {
             homeMaker.populateDockContainer(mainDiv, newData);
         });
         mainDiv.addEventListener('touchend', function(el) {
-            var bundle = el.target.id;
-            drawer.openApp(bundle);
+            drawer.openApp(el.target.id);
             if(el.target.className === 'hsApp') {
                 setTimeout(function(){
                     drawer.animateIcon(false, el.target.id);
@@ -54,13 +53,12 @@ var homeMaker = {
         });
         mainDiv.addEventListener('touchstart', drawer.animateApp, false);
         mainDiv.addEventListener('touchmove', () => drawer.movedWhilePressing = true, false);
-        taphold({
+        touchhold.init({
             time: 400,
             element: mainDiv,
-            action: function(el) {
+            callback: function(el) {
                 homeMaker.tapHoldOnIcon(el);
             },
-            passTarget: true
         });
         return mainDiv;
     },
@@ -120,7 +118,7 @@ var homeMaker = {
                                     ${newData.metadata.address.city}
                                 </div>`;
             weatherDiv2.innerHTML = `<div id='icon'>
-                                    <img src='contents/icons/weatherIcons/${newData.now.condition.code}.svg'>
+                                    <img src='contents/icons/weatherIcons/${newData.now.condition.code}.svg' width='45' height='45'>
                                 </div>
                                 <div id='condition'>
                                     ${newData.now.temperature.minimum} °${newData.units.temperature} / ${newData.now.temperature.maximum} °${newData.units.temperature}
@@ -147,10 +145,31 @@ var homeMaker = {
             }),
             searchIcon = domMaker.init({
                 type: 'div',
-                
+                id: "searchIcon",
+                className: "inputTextFieldIcons"
             });
-        mainDiv.appendChild(searchInput);
+        searchInput.addEventListener("focus", this.moveUpForTextFieldFocus, false);
+        searchInput.addEventListener("blur", this.resetMoveUp, false);
+        searchInput.addEventListener("keyup", (e) => {
+            if(e.keyCode === 13) {
+                window.location = `https://www.google.com/search?q=${e.target.value}`;
+                e.target.value = "";
+            }
+        }, false)
+        domMaker.domAppender({
+            div: mainDiv,
+            children: [searchInput, searchIcon]
+        });
         return mainDiv;
+    },
+    moveUpForTextFieldFocus: function(event) {
+        let offsetFromCenter = event.target.getBoundingClientRect().top - ((screen.height / 2) - 40);
+        if (Math.sign(offsetFromCenter) != -1) {
+            event.target.parentElement.parentElement.style.transform = `translateY(-${offsetFromCenter}px)`;
+        }
+    },
+    resetMoveUp: function(event) {
+        event.target.parentElement.parentElement.style.transform = `translateY(-5vh)`;
     },
     makeTimeContainer: function() {
         let mainDiv = domMaker.init({

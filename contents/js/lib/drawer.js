@@ -149,8 +149,10 @@ var drawer = {
             innerHTML: htmlString
         });
         mainDiv.addEventListener('touchend', function(el) {
-            var bundle = el.target.id;
-            drawer.openApp(bundle);
+            drawer.openApp(el.target.id);
+            if(!drawer.invokeMenu && !drawer.movedWhilePressing) {
+                drawer.closeDrawerEvent(el);
+            }
             if(el.target.className === 'drawerApp') {
                 setTimeout(function(){
                     drawer.animateIcon(false, el.target.id);
@@ -160,13 +162,12 @@ var drawer = {
         });
         mainDiv.addEventListener('touchstart', drawer.animateApp, false);
         mainDiv.addEventListener('touchmove', () => drawer.movedWhilePressing = true, false);
-        taphold({
+        touchhold.init({
             time: 400,
             element: mainDiv,
-            action: function(el) {
+            callback: function(el) {
                 drawer.tapHoldOnIcon(el);
             },
-            passTarget: true
         });
         return mainDiv;
     },
