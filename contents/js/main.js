@@ -1,3 +1,5 @@
+var homeActive = document.getElementById("homeMenu").classList.contains("active");
+
 var loadWidget = {
     contentContainer: "",
     loadHome: function() {
@@ -29,8 +31,35 @@ var loadWidget = {
                 ]
             });
         });
-        params.drawerContainer.addEventListener("touchend", () => {
-            
+        params.menuContainer.addEventListener("touchend", (e) => {
+            loadWidget.contentContainer.classList.add("hide");
+            for(let i = 0; i < params.menuContainer.children.length; i++) {
+                let child = params.menuContainer.children[i];
+                if(child.classList.contains("active")) {
+                    child.classList.remove("active");
+                }
+            }
+            setTimeout(() => {
+                loadWidget.contentContainer.innerHTML = "";
+            }, 300);
+            switch(e.target.id) {
+                case "homeMenu": 
+                    e.target.classList.add("active");
+                    setTimeout(() => {
+                        homeActive = true;
+                        loadWidget.loadHome();
+                    }, 360);
+                    break;
+                case "musicMenu":
+                    e.target.classList.add("active");
+                    break;
+                case "newsMenu":
+                    e.target.classList.add("active");
+                    break;
+            }
+            setTimeout(() => {
+                loadWidget.contentContainer.classList.remove("hide");
+            }, 350);
         })
         this.loadHome();
     }

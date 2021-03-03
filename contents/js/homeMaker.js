@@ -21,6 +21,18 @@ var homeMaker = {
         }).join('');
         return htmlString;
     },
+    populateTimeContainer: function(greeter, digitalClock, day, date, newData) {
+        time.init({
+            refresh: 1000,
+            twentyfour: newData.isTwentyFourHourTimeEnabled,
+            callback: function(time) {
+                greeter.innerHTML = time.greetings();
+                digitalClock.innerHTML = time.hour() + ":" + time.minute();
+                day.innerHTML = time.dayText();
+                date.innerHTML = time.date() + " " + time.monthText();
+            }
+        });
+    },
     populateDockContainer: function(mainDiv, newData) {
         if(localstore["dockFavs"]) {
             let appIDs = localstore["dockFavs"];
@@ -33,15 +45,30 @@ var homeMaker = {
             mainDiv.innerHTML = "<div id='noApps'>Please, add App Shortcuts from Drawer!</div>";
         }
     },
+    populateWeatherContainer: function(weatherDiv, weatherDiv2, newData) {
+        weatherDiv.innerHTML = `<div id='degree'>
+                                    ${newData.now.temperature.current} °${newData.units.temperature}
+                                </div>
+                                <div id='condition'>
+                                    ${translate[current].condition[newData.now.condition.code]}
+                                </div>
+                                <div id='city'>
+                                    ${newData.metadata.address.city}
+                                </div>`;
+        weatherDiv2.innerHTML = `<div id='icon'>
+                                    <img src='contents/icons/weatherIcons/${newData.now.condition.code}.svg' width='45' height='45'>
+                                </div>
+                                <div id='condition'>
+                                    ${newData.now.temperature.minimum} °${newData.units.temperature} / ${newData.now.temperature.maximum} °${newData.units.temperature}
+                                </div>`;
+    },  
     makeDockContainer: function() {
         const mainDiv = domMaker.init({
                 type: "div",
                 className: "dockFavs closed",
                 id: "dockContainer",
             });
-        api.apps.observeData(function(newData) {
-            homeMaker.populateDockContainer(mainDiv, newData);
-        });
+        homeMaker.populateDockContainer(mainDiv, api.apps);
         mainDiv.addEventListener('touchend', function(el) {
             drawer.openApp(el.target.id);
             if(el.target.className === 'hsApp') {
@@ -127,23 +154,7 @@ var homeMaker = {
                 id: "weatherInfo2",
                 className: 'weatherSmall'
             });
-        api.weather.observeData(function(newData) {
-            weatherDiv.innerHTML = `<div id='degree'>
-                                    ${newData.now.temperature.current} °${newData.units.temperature}
-                                </div>
-                                <div id='condition'>
-                                    ${translate[current].condition[newData.now.condition.code]}
-                                </div>
-                                <div id='city'>
-                                    ${newData.metadata.address.city}
-                                </div>`;
-            weatherDiv2.innerHTML = `<div id='icon'>
-                                    <img src='contents/icons/weatherIcons/${newData.now.condition.code}.svg' width='45' height='45'>
-                                </div>
-                                <div id='condition'>
-                                    ${newData.now.temperature.minimum} °${newData.units.temperature} / ${newData.now.temperature.maximum} °${newData.units.temperature}
-                                </div>`;
-        });
+        this.populateWeatherContainer(weatherDiv, weatherDiv2, api.weather);
         domMaker.domAppender({
             div: mainDiv,
             children: [weatherDiv, weatherDiv2]
@@ -183,13 +194,13 @@ var homeMaker = {
         return mainDiv;
     },
     moveUpForTextFieldFocus: function(event) {
-        let offsetFromCenter = event.target.getBoundingClientRect().top - ((screen.height / 2) - 40);
+        let offsetFromCenter = event.target.getBoundingClientRect().top - ((screen.height / 2) - 100);
         if (Math.sign(offsetFromCenter) != -1) {
             event.target.parentElement.parentElement.style.transform = `translateY(-${offsetFromCenter}px)`;
         }
     },
     resetMoveUp: function(event) {
-        event.target.parentElement.parentElement.style.transform = `translateY(-7vh)`;
+        event.target.parentElement.parentElement.style.transform = `translateY(-12vh)`;
     },
     makeTimeContainer: function() {
         let mainDiv = domMaker.init({
@@ -212,18 +223,7 @@ var homeMaker = {
                 type: "div",
                 id: "date"
             });
-        api.system.observeData(function(newData) {
-            time.init({
-                refresh: 1000,
-                twentyfour: newData.isTwentyFourHourTimeEnabled,
-                callback: function(time) {
-                    greeter.innerHTML = time.greetings();
-                    digitalClock.innerHTML = time.hour() + ":" + time.minute();
-                    day.innerHTML = time.dayText();
-                    date.innerHTML = time.date() + " " + time.monthText();
-                }
-            });
-        });
+        this.populateTimeContainer(greeter, digitalClock, day, date, api.system);
         mainDiv.addEventListener("click", (e) => {
             if(!(e.target.parentElement.id === loadWidget.contentContainer.id)) {
                 e.target.parentElement.classList.toggle("closed");
@@ -278,3 +278,22 @@ var homeMaker = {
         homeMaker.checkToHide();
     }
 }
+
+//Xen API Data Observers
+api.apps.observeData(function(newData) {
+    if(homeActive) {
+        homeMaker.populateDockContainer(document.getElementById("dockContainer"), newData);
+    }
+});
+
+api.weather.observeData(function(newData) {
+    if(homeActive) {
+        homeMaker.populateWeatherContainer(document.getElementById("weatherInfo"), document.getElementById("weatherInfo2"), newData);
+    }
+});
+
+api.system.observeData(function(newData) {
+    if(homeActive) {
+        homeMaker.populateTimeContainer(document.getElementById("greeterContainer"), document.getElementById("digitalClock"), document.getElementById("day"), document.getElementById("date"), newData);
+    }
+});

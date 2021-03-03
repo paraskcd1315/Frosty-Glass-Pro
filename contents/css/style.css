@@ -33,12 +33,17 @@ body {
     scroll-snap-align: center;
     position: absolute;
     bottom: 0px;
-    transform: translateY(-12vh);
+    transform: translateY(-13vh);
     width: 90vw;
     display: flex;
     flex-direction: column;
     padding: 0px 20px;
     transition: 350ms ease;
+}
+
+#pageContainer .mainPageContainer.hide {
+    opacity: 0;
+    transform: translateY(-7vh);
 }
 
 .mainPageContainer #timeContainer{
@@ -245,6 +250,7 @@ body {
     background-size: contain;
     width: 30px;
     height: 30px;
+    pointer-events: none;
 }
 
 #homeIcon {
@@ -276,7 +282,7 @@ body {
 }
 
 #drawerContainer #something {
-    text-align: center;
+    margin-left: 10px;
     text-transform: uppercase;
     letter-spacing: 20px;
     color: #fffb;
