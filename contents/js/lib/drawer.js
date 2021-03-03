@@ -10,32 +10,64 @@ Script by Paras Khanchandani https://twitter.com/ParasKCD
  - drawer.css
 
 #Usage:-
-drawer.init([
-    {
+- for Invoking Drawer
+drawer.init({
+    appContainer: [
+        {
+            id: //Your div className where you want user to add their own App Shortcuts
+            title: //Any name that will be stored in localStorage
+            limit: //Limit for number of apps you want a div to hold
+            callback: (element) => //function to update apps in that div(element, api.apps)
+        }, 
+        //You can add multiple objects for multiple divs
+    ]
+});
+
+- for Replacing App to another App
+drawer.init({
+    oldApp: {
         id: //Your div className where you want user to add their own App Shortcuts
-        title: //Any name that will be stored in localStorage
-        limit: //Limit for number of apps you want a div to hold
-        callback: (element) => //function to update apps in that div(element, api.apps)
-    }, 
-    //You can add multiple objects for multiple divs
-])
+        appID: el.id,
+        callback: () => //function to update apps in that div
+    }
+})
 
 #Example:- 
-params.drawerContainer.addEventListener("click", () => {
-    drawer.init([
-        {
-            id: 'dockFavs', 
-            title: 'Dock', 
-            limit: 8, 
-            callback: (mainDiv) => homeMaker.populateDockContainer(mainDiv, api.apps)
-        },
-        {
-            id: 'homeFavs',
-            title: 'HomeScreen',
-            limit: 25,
-            callback: (mainDiv) => homeMaker.populateHomeAppsContainer(mainDiv, api.apps)
+- for Invoking Drawer
+drawerButton.addEventListener("click", () => {
+    drawer.init({
+        appContainer: [
+            {
+                id: 'dockFavs', 
+                title: 'Dock', 
+                limit: 8, 
+                callback: (mainDiv) => {
+                    homeMaker.populateDockContainer(mainDiv, api.apps);
+                    homeMaker.checkToHide();
+                }
+            },
+            {
+                id: 'homeFavs',
+                title: 'HomeScreen',
+                limit: 25,
+                callback: (mainDiv) => homeMaker.populateHomeAppsContainer(mainDiv, api.apps)
+            }
+        ]
+    });
+});
+
+- for Replacing App to another App
+drawer.init({
+    oldApp: {
+        id: "dockFavs",
+        appID: el.id,
+        callback: function() {
+            drawer.invokeMenu = false;
+            let appContainer = el.parentElement;
+            homeMaker.checkToHide();
+            homeMaker.populateDockContainer(appContainer, api.apps);
         }
-    ]);
+    }
 });
 */
 
@@ -50,6 +82,8 @@ var drawer = {
     perPage: 24,
     invokeMenu: false,
     movedWhilePressing: false,
+    switchApp: false,
+    oldApp: {},
     appContainer: [],
     //The Pagination Logic
     paginator: function(items, page) {
@@ -149,7 +183,16 @@ var drawer = {
             innerHTML: htmlString
         });
         mainDiv.addEventListener('touchend', function(el) {
-            drawer.openApp(el.target.id);
+            if(drawer.switchApp) {
+                drawer.appSwitcher({
+                    id: drawer.oldApp.id,
+                    old: drawer.oldApp.appID,
+                    new: el.target.id,
+                    callback: drawer.oldApp.callback
+                });
+            } else {
+                drawer.openApp(el.target.id);
+            }
             if(!drawer.invokeMenu && !drawer.movedWhilePressing) {
                 drawer.closeDrawerEvent(el);
             }
@@ -166,7 +209,9 @@ var drawer = {
             time: 400,
             element: mainDiv,
             callback: function(el) {
-                drawer.tapHoldOnIcon(el);
+                if(!(drawer.switchApp)) {
+                    drawer.tapHoldOnIcon(el);
+                }
             },
         });
         return mainDiv;
@@ -181,6 +226,12 @@ var drawer = {
     openApp: function(bundle) {
         if(bundle && !drawer.invokeMenu && !drawer.movedWhilePressing) {
             api.apps.launchApplication(bundle);
+        }
+    },
+    appSwitcher: function(params) {
+        if(params.new && !drawer.movedWhilePressing) {
+            localstore.replaceApp(params.id, params.old, params.new);
+            params.callback();
         }
     },
     searchFunc: function(e) {
@@ -275,13 +326,19 @@ var drawer = {
             menu.closeMenu();
         }
     },
-    init: function(appContainer) {
+    init: function(params) {
         this.drawer = this.makeDrawer();
         this.header = this.makeHeader();
         this.close = this.makeCloseButton();
         this.search = this.makeSearchBar();
         this.content = this.makeAppHolder();
-        this.appContainer = appContainer;
+        if(params.appContainer) {
+            drawer.appContainer = params.appContainer;
+        }
+        if(params.oldApp) {
+            drawer.switchApp = true;
+            drawer.oldApp = params.oldApp;
+        }
         this.fillPages();
         domMaker.domAppender({
             div: this.header,

@@ -15,18 +15,23 @@ var loadWidget = {
             storageName: "KCDFrost"
         });
         params.drawerContainer.addEventListener("click", () => {
-            drawer.init([
-                {
-                    id: 'dockFavs', 
-                    title: 'Dock', 
-                    limit: 8, 
-                    callback: (mainDiv) => {
-                        homeMaker.populateDockContainer(mainDiv, api.apps);
-                        homeMaker.checkToHide();
+            drawer.init({
+                appContainer: [
+                    {
+                        id: 'dockFavs', 
+                        title: 'Dock', 
+                        limit: 8, 
+                        callback: (mainDiv) => {
+                            homeMaker.populateDockContainer(mainDiv, api.apps);
+                            homeMaker.checkToHide();
+                        }
                     }
-                }
-            ]);
+                ]
+            });
         });
+        params.drawerContainer.addEventListener("touchend", () => {
+            
+        })
         this.loadHome();
     }
 }

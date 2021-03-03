@@ -33,7 +33,7 @@ body {
     scroll-snap-align: center;
     position: absolute;
     bottom: 0px;
-    transform: translateY(-7vh);
+    transform: translateY(-12vh);
     width: 90vw;
     display: flex;
     flex-direction: column;
@@ -62,19 +62,22 @@ body {
     position: relative;
     background-color: var(--search-background);
     padding-left: 10px;
+    padding-right: 5px;
     border-radius: 10px;
     margin: 0 20px;
     margin-top: 20px;
     box-shadow: var(--shadows);
     transform: translateY(14vh);
     transition: 350ms ease;
+    display: flex;
+    flex-direction: row;
 }
 
 .mainPageContainer #searchContainer.closed {
     transform: translateY(0px);
 }
 
-.hsApp .hsAappBadge:before, #drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
+#menu .menuButtons.active:before, .hsApp .hsAappBadge:before, #drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
     content: "";
     position: absolute;
     top: 0;
@@ -89,6 +92,13 @@ body {
 
 #searchTextField {
     height: 5vh;
+}
+
+#searchIcon {
+    background-image: url(../icons/widgetIcons/search.png);
+    background-size: contain;
+    width: 60px;
+    filter: drop-shadow(0 0 5px #000a)
 }
 
 #searchTextField::-webkit-input-placeholder, #searchTextField::placeholder {
@@ -199,6 +209,56 @@ body {
     pointer-events: none;
 }
 
+#menu {
+    position: fixed;
+    bottom: 7vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 80%;
+    height: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#menu .menuButtons {
+    position: relative;
+    width: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#menu .menuButtons.active {
+    background-color: var(--search-background);
+    box-shadow: var(--shadows);
+}
+
+#menu .menuButtons.active .menuIcons {
+    filter: drop-shadow(0 0 5px);
+}
+
+#menu .menuButtons .menuIcons {
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+}
+
+#homeIcon {
+    background-image: url(../icons/widgetIcons/home.png);
+}
+
+#musicIcon {
+    background-image: url(../icons/widgetIcons/music.png);
+}
+
+#newsIcon {
+    background-image: url(../icons/widgetIcons/news.png);
+}
+
 #drawerContainer {
     position: fixed;
     bottom: 0;
@@ -210,10 +270,17 @@ body {
     left: 50%;
     transform: translateX(-50%);
     box-shadow:  0px -5px 10px #1a1b1ca0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
 
 #drawerContainer #something {
-    margin-top: -30px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 20px;
+    color: #fffb;
+    text-shadow: 0 0 5px;
 }
 
 #drawerContainer:before {

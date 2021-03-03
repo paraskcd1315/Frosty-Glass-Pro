@@ -73,8 +73,26 @@ var homeMaker = {
             message: el.getAttribute("name"),
             menuItems: [
                 {
+                    id: "switchApp",
+                    title: "Switch App",
+                    callback: function() {
+                        drawer.init({
+                            oldApp: {
+                                id: "dockFavs",
+                                appID: el.id,
+                                callback: function() {
+                                    drawer.invokeMenu = false;
+                                    let appContainer = el.parentElement;
+                                    homeMaker.checkToHide();
+                                    homeMaker.populateDockContainer(appContainer, api.apps);
+                                }
+                            }
+                        })
+                    }
+                },
+                {
                     id: "removeApp",
-                    title: "Remove App from Homescreen",
+                    title: "Remove App",
                     callback: function() {
                         drawer.invokeMenu = false;
                         localstore.removeApp('dockFavs', el.id);
@@ -232,18 +250,17 @@ var homeMaker = {
                 type: "style",
                 id: "hideDock",
                 innerHTML: `
-                .mainPageContainer #dockContainer.closed .hsApp:nth-last-child(-n+4) {
+                .mainPageContainer #dockContainer.closed .hsApp:nth-last-child(-n+${localstore["dockFavs"].length - 4}) {
                     opacity: 0;
                     display: none;
                 }`
             });
+            if(document.getElementById("hideDock")) {
+                document.body.removeChild(document.getElementById("hideDock"));
+            }
             if(localstore["dockFavs"].length > 4) {  
                 if(!document.body.contains(document.getElementById("hideDock"))) {
                     document.body.appendChild(dockHide);
-                }
-            } else {
-                if(document.body.contains(dockHide)) {
-                    document.body.removeChild(dockHide);
                 }
             }
         } 

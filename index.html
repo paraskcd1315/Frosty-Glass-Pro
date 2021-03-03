@@ -21,6 +21,17 @@
     <div id="pageContainer">
         <div class="mainPageContainer"></div>
     </div>
+    <div id="menu">
+        <div id="homeMenu" class="menuButtons active">
+            <div id="homeIcon" class="menuIcons"></div>
+        </div>
+        <div id="musicMenu" class="menuButtons">
+            <div id="musicIcon" class="menuIcons"></div>
+        </div>
+        <div id="newsMenu" class="menuButtons">
+            <div id="newsIcon" class="menuIcons"></div>
+        </div>
+    </div>
     <div id="drawerContainer"><div id = "something">apps</div></div>
     <script src="contents/js/lib/touchhold.js"></script>
     <script src="contents/js/lib/localization.js"></script>
@@ -34,6 +45,7 @@
     <script>
         loadWidget.init({
             contentContainer: document.getElementsByClassName("mainPageContainer")[0],
+            menuContainer: document.getElementById("menu"),
             drawerContainer: document.getElementById("drawerContainer")
         });
     </script>
