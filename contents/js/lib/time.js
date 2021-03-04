@@ -18,8 +18,8 @@ time.init({
 */
 
 var time = {
-    twentyfour: true,
-    zeroPadding: true,
+    twentyfour: false,
+    zeroPadding: false,
     d: "",
     funcs: {
         greet: translate[current].greets,
@@ -83,8 +83,8 @@ var time = {
     },
     init: function(params) {
         this.d = new Date();
-        this.twentyfour = params.twentyfour || true;
-        this.zeroPadding = params.zeroPadding || true;
+        if(params.twentyfour) this.twentyfour = params.twentyfour;
+        if(params.zeroPadding) this.zeroPadding = params.zeroPadding;
         params.callback(this.funcs);
         setTimeout(function() {
             time.init(params)

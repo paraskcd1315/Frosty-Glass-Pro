@@ -1,0 +1,5 @@
+var musicMaker = {
+    init: function() {
+        
+    }
+}

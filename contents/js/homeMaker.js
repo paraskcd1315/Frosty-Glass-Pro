@@ -1,50 +1,95 @@
 var homeMaker = {
-    appContainer: [],
-    appPages: function(items, page, per_page) {
-        var page = page || 1,
-            per_page = per_page || 24,
-            offset = (page - 1) * per_page,
-            paginatedItems = items.slice(offset).slice(0, per_page);
-        return this.displayApps(paginatedItems, page);
-    },
-    displayApps: function(filteredApps) {
-        const htmlString = filteredApps.map((app) => {
-            let badgeDiv = ``;
-            if(app.badge || app.badge !== '') {
-                badgeDiv = `<div id='${app.identifier}.badge' class='hsAappBadge'>${app.badge}</div>`
-            }
-            return `<div id='${app.identifier}' name='${app.name}' class='hsApp'>
-                        ${badgeDiv}
-                        <img id='${app.identifier}.icon' src='${app.icon}' class='hsAppIcon' />
-                        <div id='${app.identifier}.name' class='hsAppName'>${app.name}</div>
-                    </div>`
-        }).join('');
-        return htmlString;
-    },
-    populateTimeContainer: function(greeter, digitalClock, day, date, newData) {
+    //Time and Date Related Section
+    populateTimeContainer: function(digitalClock, day, newData) {
         time.init({
             refresh: 1000,
             twentyfour: newData.isTwentyFourHourTimeEnabled,
             callback: function(time) {
-                greeter.innerHTML = time.greetings();
                 digitalClock.innerHTML = time.hour() + ":" + time.minute();
-                day.innerHTML = time.dayText();
-                date.innerHTML = time.date() + " " + time.monthText();
+                day.innerHTML = `${time.dayText()}, ${time.date()} ${time.sMonthText()}`;
             }
         });
     },
-    populateDockContainer: function(mainDiv, newData) {
-        if(localstore["dockFavs"]) {
-            let appIDs = localstore["dockFavs"];
-            let dockApps = [];
-            for(let i = 0; i < appIDs.length; i++) {
-                dockApps.push(newData.applicationForIdentifier(appIDs[i]));
+    makeTimeContainer: function() {
+        const mainDiv = domMaker.init({
+                type: "div",
+                id: "timeContainer",
+            }),
+            digitalClock = domMaker.init({
+                type: "div",
+                id: "digitalClock",
+            }),
+            day = domMaker.init({
+                type: "div",
+                id: "day",
+            });
+        this.populateTimeContainer(digitalClock, day, api.system);
+        mainDiv.addEventListener("click", (e) => {
+            if(!(e.target.parentElement.id === loadWidget.contentContainer.id)) {
+                e.target.parentElement.classList.toggle("closed");
+                e.target.parentElement.nextElementSibling.classList.toggle("closed");
+                e.target.parentElement.nextElementSibling.nextElementSibling.classList.toggle("closed");
+                e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
+            } else {
+                e.target.classList.toggle("closed");
+                e.target.nextElementSibling.classList.toggle("closed");
+                e.target.nextElementSibling.nextElementSibling.classList.toggle("closed");
+                e.target.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
             }
-            mainDiv.innerHTML = homeMaker.displayApps(dockApps);
-        } else {
-            mainDiv.innerHTML = "<div id='noApps'>Please, add App Shortcuts from Drawer!</div>";
+            homeMaker.checkToHide();
+        })
+        domMaker.domAppender({
+            div: mainDiv,
+            children: [digitalClock, day]
+        });
+        return mainDiv;
+    },
+    //Statusbar Related Section
+    makeStatusbarContainer: function() {
+        
+    },
+    //Search Related Section
+    moveUpForTextFieldFocus: function(event) {
+        let offsetFromCenter = event.target.getBoundingClientRect().top - ((screen.height / 2) - 100);
+        if (Math.sign(offsetFromCenter) != -1) {
+            event.target.parentElement.parentElement.style.transform = `translateY(-${offsetFromCenter}px)`;
         }
     },
+    resetMoveUp: function(event) {
+        event.target.parentElement.parentElement.style.transform = null;
+    },
+    makeSearchContainer: function() {
+        const mainDiv = domMaker.init({
+                type: "div",
+                id: "searchContainer"
+            }),
+            searchInput = domMaker.init({
+                type: "input",
+                id: "searchTextField",
+                className: "inputTextField",
+                attribute: ["type", "search"],
+                attribute2: ["placeholder", "Search.."]
+            }),
+            searchIcon = domMaker.init({
+                type: 'div',
+                id: "searchIcon",
+                className: "inputTextFieldIcons"
+            });
+        searchInput.addEventListener("focus", this.moveUpForTextFieldFocus, false);
+        searchInput.addEventListener("blur", this.resetMoveUp, false);
+        searchInput.addEventListener("keyup", (e) => {
+            if(e.keyCode === 13) {
+                window.location = `https://www.google.com/search?q=${e.target.value}`;
+                e.target.value = "";
+            }
+        }, false)
+        domMaker.domAppender({
+            div: mainDiv,
+            children: [searchInput, searchIcon]
+        });
+        return mainDiv;
+    },
+    //Weather Related Section
     populateWeatherContainer: function(weatherDiv, weatherDiv2, newData) {
         weatherDiv.innerHTML = `<div id='degree'>
                                     ${newData.now.temperature.current} °${newData.units.temperature}
@@ -61,34 +106,32 @@ var homeMaker = {
                                 <div id='condition'>
                                     ${newData.now.temperature.minimum} °${newData.units.temperature} / ${newData.now.temperature.maximum} °${newData.units.temperature}
                                 </div>`;
-    },  
-    makeDockContainer: function() {
+    },
+    makeWeatherContainer: function() {
         const mainDiv = domMaker.init({
                 type: "div",
-                className: "dockFavs closed",
-                id: "dockContainer",
+                id: "weatherContainer",
+                className: "closed"
+            }),
+            weatherDiv = domMaker.init({
+                type: "div",
+                id: "weatherInfo",
+                className: 'weatherBig'
+            }),
+            weatherDiv2 = domMaker.init({
+                type: "div",
+                id: "weatherInfo2",
+                className: 'weatherSmall'
             });
-        homeMaker.populateDockContainer(mainDiv, api.apps);
-        mainDiv.addEventListener('touchend', function(el) {
-            drawer.openApp(el.target.id);
-            if(el.target.className === 'hsApp') {
-                setTimeout(function(){
-                    drawer.animateIcon(false, el.target.id);
-                }, 100);
-            }
-            drawer.movedWhilePressing = false;
+        this.populateWeatherContainer(weatherDiv, weatherDiv2, api.weather);
+        domMaker.domAppender({
+            div: mainDiv,
+            children: [weatherDiv, weatherDiv2]
         });
-        mainDiv.addEventListener('touchstart', drawer.animateApp, false);
-        mainDiv.addEventListener('touchmove', () => drawer.movedWhilePressing = true, false);
-        touchhold.init({
-            time: 400,
-            element: mainDiv,
-            callback: function(el) {
-                homeMaker.tapHoldOnIcon(el);
-            },
-        });
+        
         return mainDiv;
     },
+    //Apps Related Section
     tapHoldOnIcon: function(el) {
         drawer.invokeMenu = true;
         drawer.checkIfMenuExists();
@@ -138,112 +181,60 @@ var homeMaker = {
             ]
         });
     },
-    makeWeatherContainer: function() {
-        const mainDiv = domMaker.init({
-                type: "div",
-                id: "weatherContainer",
-                className: "closed"
-            }),
-            weatherDiv = domMaker.init({
-                type: "div",
-                id: "weatherInfo",
-                className: 'weatherBig'
-            }),
-            weatherDiv2 = domMaker.init({
-                type: "div",
-                id: "weatherInfo2",
-                className: 'weatherSmall'
-            });
-        this.populateWeatherContainer(weatherDiv, weatherDiv2, api.weather);
-        domMaker.domAppender({
-            div: mainDiv,
-            children: [weatherDiv, weatherDiv2]
-        });
-        
-        return mainDiv;
-    },
-    makeSearchContainer: function() {
-        const mainDiv = domMaker.init({
-                type: "div",
-                id: "searchContainer"
-            }),
-            searchInput = domMaker.init({
-                type: "input",
-                id: "searchTextField",
-                className: "inputTextField",
-                attribute: ["type", "search"],
-                attribute2: ["placeholder", "Search.."]
-            }),
-            searchIcon = domMaker.init({
-                type: 'div',
-                id: "searchIcon",
-                className: "inputTextFieldIcons"
-            });
-        searchInput.addEventListener("focus", this.moveUpForTextFieldFocus, false);
-        searchInput.addEventListener("blur", this.resetMoveUp, false);
-        searchInput.addEventListener("keyup", (e) => {
-            if(e.keyCode === 13) {
-                window.location = `https://www.google.com/search?q=${e.target.value}`;
-                e.target.value = "";
+    displayApps: function(filteredApps) {
+        const htmlString = filteredApps.map((app) => {
+            let badgeDiv = ``;
+            if(app.badge || app.badge !== '') {
+                badgeDiv = `<div id='${app.identifier}.badge' class='hsAappBadge'>${app.badge}</div>`
             }
-        }, false)
-        domMaker.domAppender({
-            div: mainDiv,
-            children: [searchInput, searchIcon]
-        });
-        return mainDiv;
+            return `<div id='${app.identifier}' name='${app.name}' class='hsApp'>
+                        ${badgeDiv}
+                        <img id='${app.identifier}.icon' src='${app.icon}' class='hsAppIcon' />
+                        <div id='${app.identifier}.name' class='hsAppName'>${app.name}</div>
+                    </div>`
+        }).join('');
+        return htmlString;
     },
-    moveUpForTextFieldFocus: function(event) {
-        let offsetFromCenter = event.target.getBoundingClientRect().top - ((screen.height / 2) - 100);
-        if (Math.sign(offsetFromCenter) != -1) {
-            event.target.parentElement.parentElement.style.transform = `translateY(-${offsetFromCenter}px)`;
+    populateDockContainer: function(mainDiv, newData) {
+        if(localstore["dockFavs"]) {
+            let appIDs = localstore["dockFavs"];
+            let dockApps = [];
+            for(let i = 0; i < appIDs.length; i++) {
+                dockApps.push(newData.applicationForIdentifier(appIDs[i]));
+            }
+            mainDiv.innerHTML = homeMaker.displayApps(dockApps);
+        } else {
+            mainDiv.innerHTML = "<div id='noApps'>Please, add App Shortcuts from Drawer!</div>";
         }
     },
-    resetMoveUp: function(event) {
-        event.target.parentElement.parentElement.style.transform = null;
-    },
-    makeTimeContainer: function() {
-        let mainDiv = domMaker.init({
+    makeDockContainer: function() {
+        const mainDiv = domMaker.init({
                 type: "div",
-                id: "timeContainer",
-            }),
-            greeter = domMaker.init({
-                type: "div",
-                id: "greeterContainer",
-            }),
-            digitalClock = domMaker.init({
-                type: "div",
-                id: "digitalClock",
-            }),
-            day = domMaker.init({
-                type: "div",
-                id: "day",
-            }),
-            date = domMaker.init({
-                type: "div",
-                id: "date"
+                className: "dockFavs closed",
+                id: "dockContainer",
             });
-        this.populateTimeContainer(greeter, digitalClock, day, date, api.system);
-        mainDiv.addEventListener("click", (e) => {
-            if(!(e.target.parentElement.id === loadWidget.contentContainer.id)) {
-                e.target.parentElement.classList.toggle("closed");
-                e.target.parentElement.nextElementSibling.classList.toggle("closed");
-                e.target.parentElement.nextElementSibling.nextElementSibling.classList.toggle("closed");
-                e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
-            } else {
-                e.target.classList.toggle("closed");
-                e.target.nextElementSibling.classList.toggle("closed");
-                e.target.nextElementSibling.nextElementSibling.classList.toggle("closed");
-                e.target.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
+        homeMaker.populateDockContainer(mainDiv, api.apps);
+        mainDiv.addEventListener('touchend', function(el) {
+            drawer.openApp(el.target.id);
+            if(el.target.className === 'hsApp') {
+                setTimeout(function(){
+                    drawer.animateIcon(false, el.target.id);
+                }, 100);
             }
-            homeMaker.checkToHide();
-        })
-        domMaker.domAppender({
-            div: mainDiv,
-            children: [greeter, digitalClock, day, date]
+            drawer.movedWhilePressing = false;
+        });
+        mainDiv.addEventListener('touchstart', drawer.animateApp, false);
+        mainDiv.addEventListener('touchmove', () => drawer.movedWhilePressing = true, false);
+        touchhold.init({
+            time: 400,
+            element: mainDiv,
+            callback: function(el) {
+                homeMaker.tapHoldOnIcon(el);
+            },
         });
         return mainDiv;
     },
+    //Hiding Logic
     checkToHide: function() {
         if(localstore["dockFavs"]) {
             let dockHide = domMaker.init({
@@ -271,8 +262,8 @@ var homeMaker = {
             }
         } 
     },
+    //Initiate HomeMaker
     init: function() {
-        this.appContainer = localstore['homeFavs'];
         let timeContainer = this.makeTimeContainer();
         let searchContainer = this.makeSearchContainer();
         let weatherContainer = this.makeWeatherContainer();
@@ -300,6 +291,6 @@ api.weather.observeData(function(newData) {
 
 api.system.observeData(function(newData) {
     if(homeActive) {
-        homeMaker.populateTimeContainer(document.getElementById("greeterContainer"), document.getElementById("digitalClock"), document.getElementById("day"), document.getElementById("date"), newData);
+        homeMaker.populateTimeContainer(document.getElementById("digitalClock"), document.getElementById("day"), newData);
     }
 });
