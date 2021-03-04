@@ -1,5 +1,6 @@
 .menuWindow.closed {
     opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
 }
 
 .menuWindow {
@@ -7,16 +8,28 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
     background-color: var(--background-color);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     width: 75%;
     max-height: 450px;
     border-radius: 10px;
     transition: 350ms ease;
     text-align: center;
     overflow: auto;
+    box-shadow: var(--shadows);
+}
+
+.menuWindow:before {
+    position: absolute;
+    content: "";
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: -1;
 }
 
 .menuWindow .menuButton {

@@ -200,7 +200,7 @@ var homeMaker = {
         }
     },
     resetMoveUp: function(event) {
-        event.target.parentElement.parentElement.style.transform = `translateY(-12vh)`;
+        event.target.parentElement.parentElement.style.transform = null;
     },
     makeTimeContainer: function() {
         let mainDiv = domMaker.init({
@@ -252,7 +252,13 @@ var homeMaker = {
                 innerHTML: `
                 .mainPageContainer #dockContainer.closed .hsApp:nth-last-child(-n+${localstore["dockFavs"].length - 4}) {
                     opacity: 0;
-                    display: none;
+                    pointer-events: none;
+                }
+                .mainPageContainer #dockContainer.closed {
+                    transform: translateY(10vh);
+                }
+                .mainPageContainer #timeContainer, .mainPageContainer #searchContainer {
+                    transform: translateY(24vh);
                 }`
             });
             if(document.getElementById("hideDock")) {

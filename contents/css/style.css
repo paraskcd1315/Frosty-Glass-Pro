@@ -123,6 +123,7 @@ body {
 
 .mainPageContainer #weatherContainer.closed {
     opacity: 0;
+    transform: translateY(20vh);
     pointer-events: none;
 }
 
@@ -170,6 +171,7 @@ body {
      justify-content: center;
      margin-top: 25px;
      text-align: center;
+     transition: 350ms ease;
 }
 
 .mainPageContainer #dockContainer #noApps {
