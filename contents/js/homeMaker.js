@@ -55,7 +55,11 @@ var homeMaker = {
                 id: "appSearchContainer",
                 className: "closed"
             });
-        mainDiv.addEventListener('touchend', function(el) {
+        const appsContainer = domMaker.init({
+                type: "div",
+                id: "appsContainer",
+            })
+        appsContainer.addEventListener('touchend', function(el) {
             let callback = () => {
                 document.getElementById("searchTextField").value = "";
                 homeMaker.closeAppSearchContainer();
@@ -63,24 +67,28 @@ var homeMaker = {
             drawer.openApp(el.target.id, callback);
             drawer.movedWhilePressing = false;
         });
-        mainDiv.addEventListener('touchmove', () => drawer.movedWhilePressing = true);
+        appsContainer.addEventListener('touchmove', () => drawer.movedWhilePressing = true);
+        mainDiv.appendChild(appsContainer);
         return mainDiv;
     },
     closeAppSearchContainer: function() {
-        let appSearchContainer = document.getElementById("appSearchContainer");
-        appSearchContainer.classList.add("closed");
-        setTimeout(() => appSearchContainer.innerHTML = "", 350);
+        let appSearchContainer = document.getElementById("appSearchContainer").firstChild;
+        appSearchContainer.parentElement.classList.add("closed");
+        setTimeout(() => {
+            appSearchContainer.innerHTML = "";
+        }, 350);
         document.getElementById("timeContainer").style.pointerEvents = null;
     },
     populateAppSearch: function(e) {
         let appSearchContainer = document.getElementById("appSearchContainer");
+        let div = appSearchContainer.firstChild;
         let searchString = e.target.value.toLowerCase();
         let filteredApps = drawer.allApplications.filter((app) => {
             return app.name.toLowerCase().includes(searchString);
         });
         if(e.target.value) {
             if(filteredApps.length > 0) {
-                appSearchContainer.innerHTML = homeMaker.displayApps(filteredApps);
+                div.innerHTML = homeMaker.displayApps(filteredApps);
                 setTimeout(() => appSearchContainer.classList.remove("closed"), 350);
             } else {
                 homeMaker.closeAppSearchContainer();
@@ -136,11 +144,15 @@ var homeMaker = {
         }, false);
         searchInput.addEventListener("blur", (e) => {
             this.resetMoveUp(e);
+            homeMaker.closeAppSearchContainer();
             e.target.value = "";
         }, false);
         searchInput.addEventListener("keyup", (e) => {
             homeMaker.populateAppSearch(e);
             homeMaker.redirect(e);
+            if(!e.target.value) {
+                homeMaker.closeAppSearchContainer();
+            }
         }, false)
         domMaker.domAppender({
             div: mainDiv,
