@@ -1,28 +1,148 @@
-.menuWindow.closed {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
+body {
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    text-shadow: 0 2px 10px #00000061;
 }
 
-.menuWindow {
-    color: var(--text-color);
+#wallpaper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-image: url(../../xenEmulationStuff/wallpaper/wall.png);
+    background-size: cover;
+    z-index: -2;
+}
+
+#menuBar {
+    display: flex;
+    flex-direction: row;
+}
+
+#pageContainer {
+    display: flex;
+    overflow-x: auto;
+    -webkit-scroll-snap-type: mandatory;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0vh;
+}
+
+#pageContainer .mainPageContainer {
+    scroll-snap-align: center;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    background-color: var(--background-color);
-    width: 75%;
-    max-height: 450px;
-    border-radius: 10px;
+    bottom: 0px;
+    transform: translateY(-13vh);
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px;
     transition: 350ms ease;
-    text-align: center;
-    overflow: auto;
+}
+
+#pageContainer .mainPageContainer.hide {
+    opacity: 0;
+    transform: translateY(-7vh);
+}
+
+.mainPageContainer #appSearchContainer.closed {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -20%);
+}
+
+.mainPageContainer #appSearchContainer {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    padding: 20px;
+    padding-bottom: 0px;
+    width: 80%;
+    z-index: 5;
+    background-color: var(--search-background);
+    height: 35vh;
+    overflow-y: auto;
+    transition: 350ms ease;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
     box-shadow: var(--shadows);
 }
 
-.menuWindow:before {
-    position: absolute;
-    content: "";
+.mainPageContainer #appSearchContainer .hsApp {
+    display: flex;
+    width: 95%;
+    border-bottom: #fff4 solid 2px;
+    height: 60px;
+    margin-bottom: 10px;
+    padding: 20px 0px;
+}
+
+.mainPageContainer #appSearchContainer .hsApp:last-child {
+    border: none;
+}
+
+.mainPageContainer #appSearchContainer .hsApp .hsAppName {
+    margin-bottom: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+}
+
+.mainPageContainer #appSearchContainer .hsApp img {
+    height: 50px;
+    width: 50px;
+    margin-right: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.mainPageContainer #appSearchContainer .hsApp .hsAappBadge {
+    display: none;
+}
+
+.mainPageContainer #timeContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+    transform: translateY(14vh);
+    transition: 350ms ease;
+}
+
+.mainPageContainer #timeContainer.closed {
+    transform: translateY(0px);
+}
+
+.mainPageContainer #timeContainer #digitalClock {
+    font-size: 5vh;
+    font-weight: bolder;
+}
+
+.mainPageContainer #searchContainer {
+    position: relative;
+    background-color: var(--search-background);
+    padding-left: 10px;
+    padding-right: 5px;
     border-radius: 10px;
+    margin: 0 20px;
+    margin-top: 20px;
+    box-shadow: var(--shadows);
+    transform: translateY(14vh);
+    transition: 350ms ease;
+    display: flex;
+    flex-direction: row;
+}
+
+.mainPageContainer #searchContainer.closed {
+    transform: translateY(0px);
+}
+
+.mainPageContainer #appSearchContainer:before, #menu .menuButtons.active:before, .hsApp .hsAappBadge:before, #drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
+    content: "";
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -30,22 +150,207 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     z-index: -1;
+    border-radius: 10px;
 }
 
-.menuWindow .menuButton {
+#searchTextField {
+    height: 5vh;
+}
+
+#searchIcon {
+    background-image: url(../icons/widgetIcons/search.png);
+    background-size: contain;
+    width: 60px;
+    filter: drop-shadow(0 0 5px #000a)
+}
+
+#searchTextField::-webkit-input-placeholder, #searchTextField::placeholder {
+    color: #fffa;
+    text-shadow: 0 2px 7px #0002;
+    font-family: Manrope;
+}
+
+.mainPageContainer #weatherContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 0 20px;
+    margin-top: 20px;
+    width: 90%;
+    transition: 350ms ease;
+}
+
+.mainPageContainer #weatherContainer.closed {
+    opacity: 0;
+    transform: translateY(20vh);
+    pointer-events: none;
+}
+
+#weatherContainer .weatherBig, #weatherContainer .weatherSmall {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
     background-color: var(--search-background);
-    padding: 20px;
-    margin: 30px;
+    border-radius: 10px;
+    box-shadow: var(--shadows);
+    height: 10.5vh;   
+}
+
+#weatherContainer .weatherBig {
+    width: 100%;
+    justify-content: flex-end;
+}
+
+#weatherContainer .weatherBig #condition {
+    font-weight: bolder;
+    font-size: 5vw;
+}
+
+#weatherContainer .weatherSmall {
+    width: 40%;
+    margin-left: 5%;
+    text-align: center;
+    justify-content: center;
+    font-size: 3vw;
+}
+
+#weatherContainer .weatherSmall #icon {
+    width: 40px;
+    filter: invert() drop-shadow(0px 2px 5px #000a);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+.mainPageContainer #dockContainer {
+     display: flex;
+     flex-direction: row;
+     flex-wrap: wrap;
+     justify-content: center;
+     margin-top: 25px;
+     text-align: center;
+     transition: 350ms ease;
+}
+
+.mainPageContainer #dockContainer #noApps {
+    margin-bottom: 20px;
+    color: #fff3;
+    text-shadow: 0 0 10px #fffa;
+}
+
+.hsApp {
+   position: relative;
+   width: 80px;
+   height: 100px;
+   margin-left: 5px;
+   margin-right: 5px;
+   transition: 350ms ease;
+}
+
+.hsApp img{
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+    pointer-events: none;
     border-radius: 10px;
     box-shadow: var(--shadows);
 }
 
-.menuWindow .menuHeader {
-    background-color: var(--background-secondary);
-    padding: 20px;
+.hsApp .hsAappBadge {
+    position: absolute;
+    width: 20px;
+    left: -10px;
+    top: -10px;
+    background-color: var(--search-background);
+    padding: 5px;
+    z-index: 3;
+    border-radius: 10px;
+    box-shadow: var(--shadows);
+}
+
+.hsApp .hsAppName {
+    margin-bottom: 5px;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+#menu {
+    position: fixed;
+    bottom: 7vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 80%;
+    height: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#menu .menuButtons {
+    position: relative;
+    width: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#menu .menuButtons.active {
+    background-color: var(--search-background);
+    box-shadow: var(--shadows);
+}
+
+#menu .menuButtons.active .menuIcons {
+    filter: drop-shadow(0 0 5px);
+}
+
+#menu .menuButtons .menuIcons {
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+}
+
+#homeIcon {
+    background-image: url(../icons/widgetIcons/home.png);
+}
+
+#musicIcon {
+    background-image: url(../icons/widgetIcons/music.png);
+}
+
+#newsIcon {
+    background-image: url(../icons/widgetIcons/news.png);
+}
+
+#drawerContainer {
+    position: fixed;
+    bottom: 0;
+    height: 40px;
+    width: 80%;
+    background-color: var(--search-background);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    font-size: 25px;
-    font-weight: 900;
-    margin-top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow:  0px -5px 10px #1a1b1ca0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+#drawerContainer #something {
+    margin-left: 10px;
+    text-transform: uppercase;
+    letter-spacing: 20px;
+    color: #fffb;
+    text-shadow: 0 0 5px;
+}
+
+#drawerContainer:before {
+    border-radius: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }

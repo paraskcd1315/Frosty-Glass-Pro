@@ -49,6 +49,61 @@ var homeMaker = {
         
     },
     //Search Related Section
+    makeAppSearchContainer: function() {
+        const mainDiv = domMaker.init({
+                type: "div",
+                id: "appSearchContainer",
+                className: "closed"
+            });
+        mainDiv.addEventListener('touchend', function(el) {
+            let callback = () => {
+                document.getElementById("searchTextField").value = "";
+                homeMaker.closeAppSearchContainer();
+            }
+            drawer.openApp(el.target.id, callback);
+            drawer.movedWhilePressing = false;
+        });
+        mainDiv.addEventListener('touchmove', () => drawer.movedWhilePressing = true);
+        return mainDiv;
+    },
+    closeAppSearchContainer: function() {
+        let appSearchContainer = document.getElementById("appSearchContainer");
+        appSearchContainer.classList.add("closed");
+        setTimeout(() => appSearchContainer.innerHTML = "", 350);
+        document.getElementById("timeContainer").style.pointerEvents = null;
+    },
+    populateAppSearch: function(e) {
+        let appSearchContainer = document.getElementById("appSearchContainer");
+        let searchString = e.target.value.toLowerCase();
+        let filteredApps = drawer.allApplications.filter((app) => {
+            return app.name.toLowerCase().includes(searchString);
+        });
+        if(e.target.value) {
+            if(filteredApps.length > 0) {
+                appSearchContainer.innerHTML = homeMaker.displayApps(filteredApps);
+                setTimeout(() => appSearchContainer.classList.remove("closed"), 350);
+            } else {
+                homeMaker.closeAppSearchContainer();
+            }            
+        } else {
+            homeMaker.closeAppSearchContainer();
+        }
+    },
+    redirect: function(e) {
+        if(e.keyCode === 13) {
+            let url = e.target.value;
+            let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+            if(e.target.value.substring(0, 8) === "https://" || e.target.value.substring(0,7) === "http://") {
+                window.location = e.target.value;
+            } else if(regexp.test(url)) {
+                let url = `https://${e.target.value}`;
+                window.location = url;
+            } else {
+                window.location = `https://www.google.com/search?q=${e.target.value}`;
+            }
+            e.target.value = "";
+        }
+    },
     moveUpForTextFieldFocus: function(event) {
         let offsetFromCenter = event.target.getBoundingClientRect().top - ((screen.height / 2) - 100);
         if (Math.sign(offsetFromCenter) != -1) {
@@ -75,22 +130,17 @@ var homeMaker = {
                 id: "searchIcon",
                 className: "inputTextFieldIcons"
             });
-        searchInput.addEventListener("focus", this.moveUpForTextFieldFocus, false);
-        searchInput.addEventListener("blur", this.resetMoveUp, false);
+        searchInput.addEventListener("focus", (e) => {
+            this.moveUpForTextFieldFocus(e);
+            document.getElementById("timeContainer").style.pointerEvents = "none";
+        }, false);
+        searchInput.addEventListener("blur", (e) => {
+            this.resetMoveUp(e);
+            e.target.value = "";
+        }, false);
         searchInput.addEventListener("keyup", (e) => {
-            if(e.keyCode === 13) {
-                let url = e.target.value;
-                let pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
-                if(e.target.value.substring(0, 8) === "https://" || e.target.value.substring(0,7) === "http://") {
-                    window.location = e.target.value;
-                } else if(pattern.test(url)) {
-                    let url = `https://${e.target.value}`;
-                    window.location = url;
-                } else {
-                    window.location = `https://www.google.com/search?q=${e.target.value}`;
-                }
-                e.target.value = "";
-            }
+            homeMaker.populateAppSearch(e);
+            homeMaker.redirect(e);
         }, false)
         domMaker.domAppender({
             div: mainDiv,
@@ -273,13 +323,14 @@ var homeMaker = {
     },
     //Initiate HomeMaker
     init: function() {
+        let appSearchContainer = this.makeAppSearchContainer();
         let timeContainer = this.makeTimeContainer();
         let searchContainer = this.makeSearchContainer();
         let weatherContainer = this.makeWeatherContainer();
         let dockContainer = this.makeDockContainer();
         domMaker.domAppender({
             div: loadWidget.contentContainer,
-            children: [timeContainer, searchContainer, weatherContainer, dockContainer]
+            children: [appSearchContainer, timeContainer, searchContainer, weatherContainer, dockContainer]
         });
         homeMaker.checkToHide();
     }

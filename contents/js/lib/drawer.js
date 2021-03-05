@@ -223,9 +223,12 @@ var drawer = {
             drawer.makeMenu(el);
         }
     },
-    openApp: function(bundle) {
+    openApp: function(bundle, callback) {
         if(bundle && !drawer.invokeMenu && !drawer.movedWhilePressing) {
             api.apps.launchApplication(bundle);
+            if(callback) {
+                callback();
+            }
         }
     },
     appSwitcher: function(params) {
