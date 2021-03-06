@@ -35,6 +35,8 @@ drawer.init({
 - Misc Functions can be used anywhere throughout the widget
 drawer.openApp(); to open app
 drawer.animateIcon(); to start animation for the app icon
+drawer.invokeMenu = true/false;
+drawer.movedWhilePressing = true/false;
 
 #Example:- 
 - for Invoking Drawer
