@@ -16,11 +16,6 @@ body {
     z-index: -2;
 }
 
-#menuBar {
-    display: flex;
-    flex-direction: row;
-}
-
 #pageContainer {
     display: flex;
 }
@@ -162,7 +157,7 @@ body {
     transform: translateY(0px);
 }
 
-#menu .menuButtons.active:before, .hsApp .hsAappBadge:before, #drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
+.menuBar .menuButtons.active:before, .hsApp .hsAappBadge:before, #drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
     content: "";
     position: absolute;
     top: 0;
@@ -295,7 +290,7 @@ body {
     pointer-events: none;
 }
 
-#menu {
+.menuBar {
     position: fixed;
     bottom: 7vh;
     display: flex;
@@ -307,7 +302,7 @@ body {
     transform: translateX(-50%);
 }
 
-#menu .menuButtons {
+.menuBar .menuButtons {
     position: relative;
     width: 50px;
     margin-left: 10px;
@@ -318,16 +313,16 @@ body {
     align-items: center;
 }
 
-#menu .menuButtons.active {
+.menuBar .menuButtons.active {
     background-color: var(--search-background);
     box-shadow: var(--shadows);
 }
 
-#menu .menuButtons.active .menuIcons {
+.menuBar .menuButtons.active .menuIcons {
     filter: drop-shadow(0 0 5px);
 }
 
-#menu .menuButtons .menuIcons {
+.menuBar .menuButtons .menuIcons {
     background-size: contain;
     width: 30px;
     height: 30px;

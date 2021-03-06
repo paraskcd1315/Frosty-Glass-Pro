@@ -15,7 +15,7 @@
     <div id="pageContainer">
         <div class="mainPageContainer"></div>
     </div>
-    <div id="menu">
+    <div class="menuBar">
         <div id="homeMenu" class="menuButtons active">
             <div id="homeIcon" class="menuIcons"></div>
         </div>
@@ -41,7 +41,7 @@
         loadWidget.init({
             pageContainer: document.getElementById("pageContainer"),
             contentContainer: document.getElementsByClassName("mainPageContainer")[0],
-            menuContainer: document.getElementById("menu"),
+            menuContainer: document.getElementsByClassName("menuBar")[0],
             drawerContainer: document.getElementById("drawerContainer")
         });
     </script>
