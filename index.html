@@ -12,12 +12,6 @@
 </head>
 <body>
     <!-- <div id="wallpaper"></div> -->
-
-    <!-- <div id="menuBar">
-        <div id="home" class="menuButton">Home</div>
-        <div id="music" class="menuButton">Music</div>
-        <div id="news" class="menuButton">News</div>
-    </div> -->
     <div id="pageContainer">
         <div class="mainPageContainer"></div>
     </div>
@@ -45,6 +39,7 @@
     <script src="contents/js/musicMaker.js"></script>
     <script>
         loadWidget.init({
+            pageContainer: document.getElementById("pageContainer"),
             contentContainer: document.getElementsByClassName("mainPageContainer")[0],
             menuContainer: document.getElementById("menu"),
             drawerContainer: document.getElementById("drawerContainer")

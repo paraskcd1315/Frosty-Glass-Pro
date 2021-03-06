@@ -108,8 +108,7 @@ html, body {
     height: 65px;
     margin-bottom: 5px;
     pointer-events: none;
-    border-radius: 10px;
-    box-shadow: var(--shadows);
+    filter: drop-shadow(0 5px 10px #1a1b1ca0);
 }
 
 #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {

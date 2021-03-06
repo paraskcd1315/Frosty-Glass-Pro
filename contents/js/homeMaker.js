@@ -26,11 +26,13 @@ var homeMaker = {
         this.populateTimeContainer(digitalClock, day, api.system);
         mainDiv.addEventListener("click", (e) => {
             if(!(e.target.parentElement.id === loadWidget.contentContainer.id)) {
+                document.getElementById("statusbarContainer").classList.toggle("homeOpen");
                 e.target.parentElement.classList.toggle("closed");
                 e.target.parentElement.nextElementSibling.classList.toggle("closed");
                 e.target.parentElement.nextElementSibling.nextElementSibling.classList.toggle("closed");
                 e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
             } else {
+                document.getElementById("statusbarContainer").classList.toggle("homeOpen");
                 e.target.classList.toggle("closed");
                 e.target.nextElementSibling.classList.toggle("closed");
                 e.target.nextElementSibling.nextElementSibling.classList.toggle("closed");
@@ -43,10 +45,6 @@ var homeMaker = {
             children: [digitalClock, day]
         });
         return mainDiv;
-    },
-    //Statusbar Related Section
-    makeStatusbarContainer: function() {
-        
     },
     //Search Related Section
     makeAppSearchContainer: function() {
@@ -228,7 +226,7 @@ var homeMaker = {
                                     homeMaker.populateDockContainer(appContainer, api.apps);
                                 }
                             }
-                        })
+                        });
                     }
                 },
                 {
@@ -321,6 +319,9 @@ var homeMaker = {
                 }
                 .mainPageContainer #timeContainer, .mainPageContainer #searchContainer {
                     transform: translateY(24vh);
+                }
+                #pageContainer #statusbarContainer.homeOpen {
+                    transform: translateY(-24vh);
                 }`
             });
             if(document.getElementById("hideDock")) {
@@ -365,4 +366,6 @@ api.system.observeData(function(newData) {
     if(homeActive) {
         homeMaker.populateTimeContainer(document.getElementById("digitalClock"), document.getElementById("day"), newData);
     }
+    lpmMode = newData.isLowPowerModeEnabled;
+    loadWidget.populateWithBattery(document.getElementById("statusbarContainer"), api.resources);
 });

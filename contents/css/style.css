@@ -23,14 +23,30 @@ body {
 
 #pageContainer {
     display: flex;
-    overflow-x: auto;
-    -webkit-scroll-snap-type: mandatory;
-    scroll-snap-type: x mandatory;
-    scroll-padding: 0vh;
+}
+
+#pageContainer #statusbarContainer {
+    position: absolute;
+    bottom: 35vh;
+    right: 10vw;
+    display: flex;
+    border-radius: 10px;
+    transition: transform 350ms ease;
+}
+
+#pageContainer #statusbarContainer.homeOpen {
+    transform: translateY(-14vh);
+}
+
+#statusbarContainer img{
+    width: 35px;
+    height: 35px;
+    margin-left: 5px;
+    margin-right: 5px;
+    filter: drop-shadow(0 0 5px #000a)
 }
 
 #pageContainer .mainPageContainer {
-    scroll-snap-align: center;
     position: absolute;
     bottom: 0px;
     transform: translateY(-13vh);
@@ -81,7 +97,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100%;
+    z-index: -1;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 10px;
@@ -104,6 +120,10 @@ body {
 .mainPageContainer #appSearchContainer .hsApp img {
     height: 60px;
     width: 60px;
+}
+
+.mainPageContainer #appSearchContainer .hsApp .hsAappBadge {
+    display: none;
 }
 
 .mainPageContainer #timeContainer{
@@ -254,8 +274,7 @@ body {
     height: 50px;
     margin-bottom: 5px;
     pointer-events: none;
-    border-radius: 10px;
-    box-shadow: var(--shadows);
+    filter: drop-shadow(0 5px 10px #1a1b1ca0);
 }
 
 .hsApp .hsAappBadge {
@@ -344,7 +363,8 @@ body {
 }
 
 #drawerContainer #something {
-    margin-left: 10px;
+    width: 100%;
+    text-align: center;
     text-transform: uppercase;
     letter-spacing: 20px;
     color: #fffb;
