@@ -202,7 +202,7 @@ var drawer = {
         }
     },
     animateApp: function(el) {
-        if((el.target.className === "drawerApp" || el.target.className === 'hsApp') && !drawer.movedWhilePressing) {
+        if((el.target.className === "drawerApp" || el.target.className === 'hsApp' || el.target.className === 'musicButtons') && !drawer.movedWhilePressing) {
             drawer.animateIcon(true, el.target.id);
         }
     },

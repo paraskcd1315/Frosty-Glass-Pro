@@ -195,6 +195,8 @@ var homeMaker = {
                             localstore.addApp('dockFavs', element.id);
                             homeMaker.populateDockContainer(appContainer, api.apps);
                             homeMaker.checkToHide();
+                        } else {
+                            alert("Can't add More apps!");
                         }
                     }
                 },
@@ -556,15 +558,19 @@ api.weather.observeData(function(newData) {
 api.system.observeData(function(newData) {
     if(homeActive) {
         homeMaker.populateTimeContainer(document.getElementById("digitalClock"), document.getElementById("day"), newData);
+        lpmMode = newData.isLowPowerModeEnabled;
+        homeMaker.populateWithBattery(document.getElementById("statusbarContainer"), api.resources);
     }
-    lpmMode = newData.isLowPowerModeEnabled;
-    homeMaker.populateWithBattery(document.getElementById("statusbarContainer"), api.resources);
 });
 
 api.comms.observeData(function(newData) {
-    homeMaker.populateStatusbarContainer(document.getElementById("statusbarContainer"), newData);
+    if(homeActive) {
+        homeMaker.populateStatusbarContainer(document.getElementById("statusbarContainer"), newData);
+    }
 });
 
 api.resources.observeData(function(newData) {
-    homeMaker.populateWithBattery(document.getElementById("statusbarContainer"), newData);
+    if(homeActive) {
+        homeMaker.populateWithBattery(document.getElementById("statusbarContainer"), newData);
+    }
 });

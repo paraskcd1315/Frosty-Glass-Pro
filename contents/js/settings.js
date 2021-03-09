@@ -37,7 +37,8 @@ var settings = {
             .mainPageContainer #dockContainer .hsApp .hsAappBadge:before,
             #drawerContainer:before, 
             .menuBar .menuButtons.active:before, 
-            #pageContainer .mainPageContainer #appSearchContainer:before {
+            #appSearchContainer:before,
+            .mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration:before {
                 border-radius: ${Math.ceil(config.borderRadius)}px;
                 backdrop-filter: blur(${Math.ceil(config.blurIntensity)}px);
                 -webkit-backdrop-filter: blur(${Math.ceil(config.blurIntensity)}px);
@@ -56,7 +57,9 @@ var settings = {
             .mainPageContainer #weatherContainer .weatherBig, 
             .mainPageContainer #weatherContainer .weatherSmall,
             .mainPageContainer #dockContainer .hsApp .hsAappBadge,
-            .menuBar .menuButtons {
+            .menuBar .menuButtons,
+            .mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration,
+            .mainPageContainer #musicHeaderContainer #musicArtworkContainer img {
                 border-radius: ${Math.ceil(config.borderRadius)}px;
             }`
         }));

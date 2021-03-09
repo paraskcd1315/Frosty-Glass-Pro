@@ -200,7 +200,8 @@ body {
 .mainPageContainer #dockContainer .hsApp .hsAappBadge:before,
 #drawerContainer:before, 
 .menuBar .menuButtons.active:before, 
-#pageContainer .mainPageContainer #appSearchContainer:before {
+#appSearchContainer:before,
+.mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration:before {
     position: absolute;
     content: "";
     top: 0;
@@ -344,6 +345,56 @@ body {
     border-top-right-radius: 10px;
 }
 
+.mainPageContainer #musicHeaderContainer {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -90%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration {
+    position: absolute;
+    top: -55px;
+    left: -30px;
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: var(--search-background);
+    box-shadow: var(--shadows);
+}
+
+.mainPageContainer #musicHeaderContainer #musicArtworkContainer img{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 10px #1a1b1ca0)
+}
+
+.mainPageContainer .musicButtonsContainer {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -90%);
+    top: x;
+    display: flex;
+}
+
+.mainPageContainer .musicButtonsContainer .musicButtons img {
+    width: 60px;
+    height: 60px;
+    filter: invert() drop-shadow(0 0 10px #1a1b1ca0);
+    pointer-events: none;
+}
+
+.mainPageContainer .musicButtonsContainer .musicButtons #playButtonIcon {
+    width: 90px;
+    height: 90px;
+}
+
 /* iP5 */
 @media only screen 
 and (device-width : 320px) 
@@ -374,6 +425,18 @@ and (device-height : 568px) {
     .menuBar .menuButtons {
         width: 40px;
         height: 40px;
+    }
+    .mainPageContainer .musicButtonsContainer {
+        transform: translate(-50%, -70%);
+    }
+    .mainPageContainer #musicHeaderContainer #musicArtworkContainer img,
+    .mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration  {
+        width: 150px;
+        height: 150px;
+    }
+    .mainPageContainer .musicButtonsContainer .musicButtons #playButtonIcon {
+        width: 80px;
+        height: 80px;
     }
 }
 

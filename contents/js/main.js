@@ -1,4 +1,5 @@
 var homeActive = document.getElementById("homeMenu").classList.contains("active");
+var musicActive = document.getElementById("musicMenu").classList.contains("active");
 var lpmMode = false;
 
 var loadWidget = {
@@ -47,6 +48,7 @@ var loadWidget = {
                 switch(e.target.id) {
                     case "homeMenu": 
                         e.target.classList.add("active");
+                        musicActive = false;
                         setTimeout(() => {
                             homeActive = true;
                             loadWidget.loadHome();
@@ -54,6 +56,11 @@ var loadWidget = {
                         break;
                     case "musicMenu":
                         e.target.classList.add("active");
+                        homeActive = false;
+                        setTimeout(() => {
+                            musicActive = true;
+                            loadWidget.loadMusic();
+                        }, 360);
                         break;
                     case "newsMenu":
                         e.target.classList.add("active");
