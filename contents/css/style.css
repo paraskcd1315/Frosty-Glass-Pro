@@ -5,51 +5,59 @@ body {
     text-shadow: 0 2px 10px #00000061;
 }
 
-#wallpaper {
+#appSearchContainer {
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    background-image: url(../../xenEmulationStuff/wallpaper/wall.png);
-    background-size: cover;
-    z-index: -2;
-}
-
-#pageContainer {
-    display: flex;
-}
-
-#pageContainer #statusbarContainer {
-    position: absolute;
-    bottom: 35vh;
-    right: 10vw;
-    display: flex;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -140%);
+    z-index: 2;
     border-radius: 10px;
-    transition: transform 350ms ease;
+    padding: 20px 0;
+    background-color: var(--search-background);
+    width: 80%;
+    transition: 350ms ease;
+    box-shadow: var(--shadows);
 }
 
-#pageContainer #statusbarContainer.homeOpen {
-    transform: translateY(-14vh);
+#appSearchContainer.closed {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -130%);
 }
 
-#statusbarContainer img{
-    width: 35px;
-    height: 35px;
-    margin-left: 5px;
-    margin-right: 5px;
-    filter: drop-shadow(0 0 5px #000a)
+#appSearchContainer #appsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    height: 20vh;
+    overflow-y: auto;
+    justify-content: center;
+    align-items: center;
 }
 
-#pageContainer .mainPageContainer {
-    position: absolute;
-    bottom: 0px;
-    transform: translateY(-13vh);
-    width: 90vw;
+#appSearchContainer #appsContainer .hsApp {
     display: flex;
     flex-direction: column;
-    padding: 0px 20px;
-    transition: 350ms ease;
+    width: 80px;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#appSearchContainer #appsContainer .hsApp .hsAppName {
+    font-size: 10px;
+    pointer-events: none;
+}
+
+#appSearchContainer #appsContainer .hsApp img {
+    height: 60px;
+    width: 60px;
+    pointer-events: none
+}
+
+#appSearchContainer #appsContainer .hsApp .hsAappBadge {
+    display: none;
+    pointer-events: none
 }
 
 #pageContainer .mainPageContainer.hide {
@@ -57,127 +65,81 @@ body {
     transform: translateY(-7vh);
 }
 
-.mainPageContainer #appSearchContainer.closed {
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -20%);
-}
-
-.mainPageContainer #appSearchContainer {
+#pageContainer .mainPageContainer {
     position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: translate(-50%, -70%);
-    height: 30vh;
-    z-index: 2;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: var(--search-background);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-14vh);
+    transition: 350ms ease;
+    width: 100%;
+}
+
+#pageContainer .mainPageContainer #homeHeader {
+    display: flex;
+    flex-direction: column;
     width: 80%;
-    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
     transition: 350ms ease;
 }
 
-.mainPageContainer #appSearchContainer #appsContainer {
+#pageContainer .mainPageContainer #homeHeader.hide {
+    transform: translateY(140px);
+}
+
+.mainPageContainer #homeHeader #topHeader {
     display: flex;
-    flex-wrap: wrap;
-    height: 30vh;
-    overflow-y: auto;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.mainPageContainer #appSearchContainer:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 10px;
-}
-
-.mainPageContainer #appSearchContainer .hsApp {
+.mainPageContainer #homeHeader #topHeader #timeContainer {
     display: flex;
     flex-direction: column;
-    width: 100px;
-    height: 100px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    pointer-events: none;
 }
 
-.mainPageContainer #appSearchContainer .hsApp .hsAppName {
-    font-size: 12px;
-}
-
-.mainPageContainer #appSearchContainer .hsApp img {
-    height: 60px;
-    width: 60px;
-}
-
-.mainPageContainer #appSearchContainer .hsApp .hsAappBadge {
-    display: none;
-}
-
-.mainPageContainer #timeContainer{
-    display: flex;
-    flex-direction: column;
-    margin: 0 20px;
-    transform: translateY(14vh);
-    transition: 350ms ease;
-}
-
-.mainPageContainer #timeContainer.closed {
-    transform: translateY(0px);
-}
-
-.mainPageContainer #timeContainer #digitalClock {
+.mainPageContainer #homeHeader #topHeader #timeContainer #digitalClock {
     font-size: 5vh;
     font-weight: bolder;
 }
 
-.mainPageContainer #searchContainer {
+.mainPageContainer #homeHeader #topHeader #statusbarContainer {
+    display: flex;
+    margin-top: auto;
+    pointer-events: none;
+}
+
+.mainPageContainer #homeHeader #topHeader #statusbarContainer img{
+    width: 40px;
+    height: 40px;
+    margin-left: 5px;
+    margin-right: 5px;
+    filter: drop-shadow(0 0 5px #000a);
+}
+
+.mainPageContainer #homeHeader #bottomHeader {
+    transition: 350ms ease;
+}
+
+.mainPageContainer #homeHeader #bottomHeader #searchContainer {
     position: relative;
     background-color: var(--search-background);
-    padding-left: 10px;
-    padding-right: 5px;
+    padding: 5px 10px;
     border-radius: 10px;
-    margin: 0 20px;
     margin-top: 20px;
     box-shadow: var(--shadows);
-    transform: translateY(14vh);
     transition: 350ms ease;
     display: flex;
     flex-direction: row;
 }
 
-.mainPageContainer #searchContainer.closed {
-    transform: translateY(0px);
-}
-
-.menuBar .menuButtons.active:before, .hsApp .hsAappBadge:before, #drawerContainer:before, .mainPageContainer #searchContainer:before, #weatherContainer .weatherBig:before, #weatherContainer .weatherSmall:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: -1;
-    border-radius: 10px;
-}
-
-#searchTextField {
-    height: 5vh;
-}
-
-#searchIcon {
+.mainPageContainer #homeHeader #bottomHeader #searchContainer #searchIcon {
     background-image: url(../icons/widgetIcons/search.png);
     background-size: contain;
-    width: 60px;
+    width: 50px;
+    background-repeat: no-repeat;
     filter: drop-shadow(0 0 5px #000a)
 }
 
@@ -187,22 +149,23 @@ body {
     font-family: Manrope;
 }
 
-.mainPageContainer #weatherContainer {
+#pageContainer .mainPageContainer #weatherContainer{
     display: flex;
     flex-direction: row;
-    margin: 0 20px;
+    margin: 0 auto;
     margin-top: 20px;
-    width: 90%;
+    width: 80%;
     transition: 350ms ease;
 }
 
-.mainPageContainer #weatherContainer.closed {
+#pageContainer .mainPageContainer #weatherContainer.closed {
+    transform: translateY(20px);
     opacity: 0;
-    transform: translateY(20vh);
     pointer-events: none;
 }
 
-#weatherContainer .weatherBig, #weatherContainer .weatherSmall {
+.mainPageContainer #weatherContainer .weatherBig, 
+.mainPageContainer #weatherContainer .weatherSmall {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -213,22 +176,38 @@ body {
     height: 10.5vh;   
 }
 
-#weatherContainer .weatherBig {
+.mainPageContainer #weatherContainer .weatherBig {
     width: 100%;
     justify-content: flex-end;
 }
 
-#weatherContainer .weatherBig #condition {
+.mainPageContainer #weatherContainer .weatherBig #condition {
     font-weight: bolder;
     font-size: 5vw;
 }
 
-#weatherContainer .weatherSmall {
+.mainPageContainer #weatherContainer .weatherSmall {
     width: 40%;
     margin-left: 5%;
     text-align: center;
     justify-content: center;
     font-size: 3vw;
+}
+
+.mainPageContainer #weatherContainer .weatherSmall:before,
+.mainPageContainer #weatherContainer .weatherBig:before, 
+.mainPageContainer #homeHeader #bottomHeader #searchContainer:before,
+.mainPageContainer #dockContainer .hsApp .hsAappBadge:before,
+#drawerContainer:before, 
+.menuBar .menuButtons.active:before, 
+#pageContainer .mainPageContainer #appSearchContainer:before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
 }
 
 #weatherContainer .weatherSmall #icon {
@@ -239,32 +218,26 @@ body {
     margin-bottom: 10px;
 }
 
-.mainPageContainer #dockContainer {
-     display: flex;
-     flex-direction: row;
-     flex-wrap: wrap;
-     justify-content: center;
-     margin-top: 25px;
-     text-align: center;
-     transition: 350ms ease;
+#pageContainer .mainPageContainer #dockContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 25px;
+    text-align: center;
+    transition: 350ms ease;
 }
 
-.mainPageContainer #dockContainer #noApps {
-    margin-bottom: 20px;
-    color: #fff3;
-    text-shadow: 0 0 10px #fffa;
-}
-
-.hsApp {
+.mainPageContainer #dockContainer .hsApp {
    position: relative;
    width: 80px;
-   height: 100px;
+   height: 95px;
    margin-left: 5px;
    margin-right: 5px;
    transition: 350ms ease;
 }
 
-.hsApp img{
+.mainPageContainer #dockContainer .hsApp img{
     width: 50px;
     height: 50px;
     margin-bottom: 5px;
@@ -272,10 +245,10 @@ body {
     filter: drop-shadow(0 5px 10px #1a1b1ca0);
 }
 
-.hsApp .hsAappBadge {
+.mainPageContainer #dockContainer .hsApp .hsAappBadge {
     position: absolute;
     width: 20px;
-    left: -10px;
+    left: 0px;
     top: -10px;
     background-color: var(--search-background);
     padding: 5px;
@@ -284,7 +257,7 @@ body {
     box-shadow: var(--shadows);
 }
 
-.hsApp .hsAppName {
+.mainPageContainer #dockContainer .hsApp .hsAppName {
     margin-bottom: 5px;
     font-size: 12px;
     pointer-events: none;
@@ -311,6 +284,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 350ms ease;
 }
 
 .menuBar .menuButtons.active {
@@ -345,23 +319,21 @@ body {
     position: fixed;
     bottom: 0;
     height: 40px;
-    width: 80%;
+    width: 60%;
     background-color: var(--search-background);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     left: 50%;
     transform: translateX(-50%);
     box-shadow:  0px -5px 10px #1a1b1ca0;
-    align-items: center;
-    justify-content: center;
-    display: flex;
 }
 
 #drawerContainer #something {
-    width: 100%;
+    margin: 7px 0;
+    margin-left: 20px;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 20px;
+    letter-spacing: 25px;
     color: #fffb;
     text-shadow: 0 0 5px;
 }
@@ -370,4 +342,148 @@ body {
     border-radius: 0px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+}
+
+/* iP5 */
+@media only screen 
+and (device-width : 320px) 
+and (device-height : 568px) {
+    #pageContainer .mainPageContainer {
+        transform: translateY(-18vh);
+    }
+    #pageContainer .mainPageContainer #homeHeader.hide {
+        transform: translateY(100px)
+    }
+    .mainPageContainer #homeHeader #topHeader #statusbarContainer img {
+        width: 30px;
+        height: 30px;
+    }
+    .mainPageContainer #dockContainer .hsApp {
+        width: 60px;
+    }
+    .mainPageContainer #dockContainer .hsApp img {
+        width: 40px;
+        height: 40px;
+    }
+    .mainPageContainer #dockContainer .hsApp .hsAappBadge {
+        padding: 2px;
+    }
+    .menuBar {
+        bottom: 10vh;
+    }
+    .menuBar .menuButtons {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 6s */
+@media only screen 
+and (device-width : 375px) 
+and (device-height : 667px) {
+    #pageContainer .mainPageContainer #homeHeader.hide {
+        transform: translateY(100px)
+    }
+    .mainPageContainer #homeHeader #topHeader #statusbarContainer img {
+        width: 35px;
+        height: 35px;
+    }
+    .mainPageContainer #dockContainer .hsApp {
+        width: 70px;
+    }
+    .menuBar .menuButtons {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* iPX */
+@media only screen 
+and (device-width : 375px) 
+and (device-height : 812px) {
+    #pageContainer .mainPageContainer {
+        transform: translateY(-14vh);
+    }
+    .mainPageContainer #homeHeader #topHeader #statusbarContainer img {
+        width: 35px;
+        height: 35px;
+    }
+    #pageContainer .mainPageContainer #homeHeader.hide {
+        transform: translateY(120px)
+    }
+    .mainPageContainer #dockContainer .hsApp {
+        width: 70px;
+    }
+    .menuBar .menuButtons {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 6sPlus */
+@media only screen 
+and (device-width : 414px) 
+and (device-height : 736px) {
+    #pageContainer .mainPageContainer #homeHeader.hide {
+        transform: translateY(120px)
+    }
+    .menuBar .menuButtons {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 12/12pro */
+@media only screen 
+and (device-width : 390px) 
+and (device-height : 844px) {
+     #pageContainer .mainPageContainer {
+        transform: translateY(-14vh);
+    }
+    .mainPageContainer #homeHeader #topHeader #statusbarContainer img {
+        width: 35px;
+        height: 35px;
+    }
+    #pageContainer .mainPageContainer #homeHeader.hide {
+        transform: translateY(120px)
+    }
+    .mainPageContainer #dockContainer .hsApp {
+        width: 70px;
+    }
+    .menuBar .menuButtons {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 12 mini */
+@media only screen 
+and (device-width : 360px) 
+and (device-height : 780px) {
+    #pageContainer .mainPageContainer {
+        transform: translateY(-14vh);
+    }
+    .mainPageContainer #homeHeader #topHeader #statusbarContainer img {
+        width: 35px;
+        height: 35px;
+    }
+    #pageContainer .mainPageContainer #homeHeader.hide {
+        transform: translateY(120px)
+    }
+    .mainPageContainer #dockContainer .hsApp {
+        width: 65px;
+    }
+    .menuBar .menuButtons {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 11promax/xsmax */ 
+@media only screen 
+and (device-width : 414px) 
+and (device-height : 896px) {
+    #pageContainer .mainPageContainer #homeHeader.hide {
+        transform: translateY(120px)
+    }
 }

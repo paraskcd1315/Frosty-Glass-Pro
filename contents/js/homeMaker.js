@@ -1,4 +1,42 @@
 var homeMaker = {
+    makeHeaderContainer: function() {
+        const mainDiv = domMaker.init({
+                type: "div",
+                id: "homeHeader",
+                className: "hide"
+            }),
+            topHeader = domMaker.init({
+                type: "div",
+                id: "topHeader",
+            }),
+            bottomHeader = domMaker.init({
+                type: "div",
+                id: "bottomHeader"
+            });
+        domMaker.domAppender({
+            div: topHeader,
+            children: [this.makeTimeContainer(), this.makeStatusBarContainer()]
+        });
+        bottomHeader.appendChild(this.makeSearchContainer());
+        topHeader.addEventListener("click", function(e) {
+            if(e.target.id === "topHeader") {
+                if(!e.target.parentElement.nextElementSibling.classList.contains("closed")) {
+                    e.target.parentElement.classList.add("hide");
+                    e.target.parentElement.nextElementSibling.classList.add("closed");
+                    e.target.parentElement.nextElementSibling.nextElementSibling.classList.add("closed");
+                } else {
+                    e.target.parentElement.classList.remove("hide");
+                    e.target.parentElement.nextElementSibling.classList.remove("closed");
+                    e.target.parentElement.nextElementSibling.nextElementSibling.classList.remove("closed");
+                }
+            }
+        })
+        domMaker.domAppender({
+            div: mainDiv,
+            children: [topHeader, bottomHeader]
+        });
+        return mainDiv;
+    },
     //Time and Date Related Section
     populateTimeContainer: function(digitalClock, day, newData) {
         time.init({
@@ -24,26 +62,79 @@ var homeMaker = {
                 id: "day",
             });
         this.populateTimeContainer(digitalClock, day, api.system);
-        mainDiv.addEventListener("click", (e) => {
-            if(!(e.target.parentElement.id === loadWidget.contentContainer.id)) {
-                document.getElementById("statusbarContainer").classList.toggle("homeOpen");
-                e.target.parentElement.classList.toggle("closed");
-                e.target.parentElement.nextElementSibling.classList.toggle("closed");
-                e.target.parentElement.nextElementSibling.nextElementSibling.classList.toggle("closed");
-                e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
-            } else {
-                document.getElementById("statusbarContainer").classList.toggle("homeOpen");
-                e.target.classList.toggle("closed");
-                e.target.nextElementSibling.classList.toggle("closed");
-                e.target.nextElementSibling.nextElementSibling.classList.toggle("closed");
-                e.target.nextElementSibling.nextElementSibling.nextElementSibling.classList.toggle("closed");
-            }
-            homeMaker.checkToHide();
-        })
         domMaker.domAppender({
             div: mainDiv,
             children: [digitalClock, day]
         });
+        return mainDiv;
+    },
+    //Statusbar Related Section
+    populateStatusbarContainer: function(div, newData) {
+        let signal;
+        let wifi;
+        if(document.getElementById("statusbarSignal")) {
+            div.removeChild(document.getElementById("statusbarSignal"));
+        }
+        if(document.getElementById("statusbarWifi")) {
+            div.removeChild(document.getElementById("statusbarWifi"));
+        }
+        if(newData.wifi.enabled) {
+           wifi = domMaker.init({
+                type: "img",
+                id: "statusbarWifi",
+                src: "contents/icons/statusIcons/wifi/" + newData.wifi.bars + ".png"
+            });
+            div.prepend(wifi);
+        }
+        if(newData.telephony.type !== "") {
+            signal = domMaker.init({
+                type: "img",
+                id: "statusbarSignal",
+                src: "contents/icons/statusIcons/telephony/" + newData.telephony.bars + ".png"
+            });
+            div.prepend(signal);
+        }
+    },
+    populateWithBattery: function(div, newData) {
+        let battlevel = Math.ceil((newData.battery.percentage) / 10) * 10;
+        let battery;
+        let batteryChargingURL = lpmMode ? "contents/icons/statusIcons/battery-charging-lpm/" + battlevel + ".png" : "contents/icons/statusIcons/battery-charging/" + battlevel + ".png";
+        let batteryURL = lpmMode ? "contents/icons/statusIcons/battery-lpm/" + battlevel + ".png" : "contents/icons/statusIcons/battery/" + battlevel + ".png";
+        switch(newData.battery.state) {
+            case 0: 
+                battery = domMaker.init({
+                    type: "img",
+                    id: "statusbarBattery",
+                    src: batteryURL
+                });
+                break;
+            case 1:
+                battery = domMaker.init({
+                    type: "img",
+                    id: "statusbarBattery",
+                    src: batteryChargingURL
+                });
+                break;
+            default:
+                battery = domMaker.init({
+                    type: "img",
+                    id: "statusbarBattery",
+                    src: batteryURL
+                });
+                break;
+        }
+        if(document.getElementById("statusbarBattery")) {
+            div.removeChild(document.getElementById("statusbarBattery"));
+        }
+        div.appendChild(battery);
+    },
+    makeStatusBarContainer: function() {
+        const mainDiv = domMaker.init({
+                type: "div",
+                id: "statusbarContainer",
+            });
+        this.populateStatusbarContainer(mainDiv, api.comms);
+        this.populateWithBattery(mainDiv, api.resources)
         return mainDiv;
     },
     //Search Related Section
@@ -63,11 +154,68 @@ var homeMaker = {
                 homeMaker.closeAppSearchContainer();
             }
             drawer.openApp(el.target.id, callback);
+            setTimeout(function(){
+                drawer.animateIcon(false, el.target.id);
+            }, 100);
             drawer.movedWhilePressing = false;
         });
+        appsContainer.addEventListener('touchstart', drawer.animateApp, false);
         appsContainer.addEventListener('touchmove', () => drawer.movedWhilePressing = true);
+        touchhold.init({
+            time: 400,
+            element: appsContainer,
+            callback: function(el) {
+                if(!(drawer.switchApp)) {
+                    homeMaker.tapHoldAppSearchContainer(el);
+                }
+            },
+        });
         mainDiv.appendChild(appsContainer);
         return mainDiv;
+    },
+    tapHoldAppSearchContainer: function(el) {
+        if(el.className === "hsApp") {
+            drawer.invokeMenu = true;
+            drawer.checkIfMenuExists();
+            homeMaker.makeMenuForAppSearchContainer(el);
+        }
+    },
+    makeMenuForAppSearchContainer: function(element) {
+        menu.init({
+            id: element.id + ".Menu",
+            message: element.getAttribute("name"),
+            menuItems: [
+                {
+                    id: "addApp",
+                    title: "Add to Homescreen",
+                    callback: function() {
+                        drawer.invokeMenu = false;
+                        if(!localstore['dockFavs'] || localstore['dockFavs'].length !== 8) {
+                            let appContainer = document.getElementsByClassName('dockFavs')[0]
+                            localstore.addApp('dockFavs', element.id);
+                            homeMaker.populateDockContainer(appContainer, api.apps);
+                            homeMaker.checkToHide();
+                        }
+                    }
+                },
+                {
+                    id: "deleteApp",
+                    title: "Uninstall App",
+                    callback: function() {
+                        drawer.invokeMenu = false;
+                        api.apps.deleteApplication(element.id);
+                        drawer.allApplications = api.apps.allApplications;
+                    }
+                },
+                {
+                    id: "closeMenu",
+                    title: "Cancel",
+                    callback: function() {
+                        drawer.invokeMenu = false;
+                    }
+                }
+            ]
+        });
     },
     closeAppSearchContainer: function() {
         let appSearchContainer = document.getElementById("appSearchContainer").firstChild;
@@ -97,7 +245,24 @@ var homeMaker = {
     },
     redirect: function(e) {
         if(e.keyCode === 13) {
-            let url = e.target.value;
+            let url = e.target.value, searchEngine;
+            switch(config.searchEngine) {
+                case "Google": 
+                    searchEngine = 'https://www.google.com/search?q=';
+                    break;
+                case "Bing":
+                    searchEngine = 'https://www.bing.com/search?q=';
+                    break;
+                case "DuckDuckGo":
+                    searchEngine = 'https://duckduckgo.com/?q=';
+                    break;
+                case "Yahoo":
+                    searchEngine = 'https://search.yahoo.com/search?p=';
+                    break;
+                case "Youtube":
+                    searchEngine = 'https://www.youtube.com/results?search_query='
+                    break;
+            }
             let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
             if(e.target.value.substring(0, 8) === "https://" || e.target.value.substring(0,7) === "http://") {
                 window.location = e.target.value;
@@ -105,13 +270,13 @@ var homeMaker = {
                 let url = `https://${e.target.value}`;
                 window.location = url;
             } else {
-                window.location = `https://www.google.com/search?q=${e.target.value}`;
+                window.location = `${searchEngine}${e.target.value}`;
             }
             e.target.value = "";
         }
     },
     moveUpForTextFieldFocus: function(event) {
-        let offsetFromCenter = event.target.getBoundingClientRect().top - ((screen.height / 2) - 100);
+        let offsetFromCenter = event.target.getBoundingClientRect().top - ((screen.height / 2) - 40);
         if (Math.sign(offsetFromCenter) != -1) {
             event.target.parentElement.parentElement.style.transform = `translateY(-${offsetFromCenter}px)`;
         }
@@ -314,14 +479,37 @@ var homeMaker = {
                     opacity: 0;
                     pointer-events: none;
                 }
-                .mainPageContainer #dockContainer.closed {
-                    transform: translateY(10vh);
+                #pageContainer .mainPageContainer #homeHeader.hide {
+                    transform: translateY(210px);
                 }
-                .mainPageContainer #timeContainer, .mainPageContainer #searchContainer {
-                    transform: translateY(24vh);
+                #pageContainer .mainPageContainer #dockContainer.closed{
+                    transform: translateY(85px);
                 }
-                #pageContainer #statusbarContainer.homeOpen {
-                    transform: translateY(-24vh);
+                /* iP5 */
+                @media only screen 
+                and (device-width : 320px) 
+                and (device-height : 568px) {
+                    #pageContainer .mainPageContainer {
+                        transform: translateY(-16vh);
+                    }
+                    #pageContainer .mainPageContainer #homeHeader.hide {
+                        transform: translateY(180px)
+                    }
+                }
+                /* 6s */
+                @media only screen 
+                and (device-width : 375px) 
+                and (device-height : 667px) {
+                    #pageContainer .mainPageContainer #homeHeader.hide {
+                        transform: translateY(180px)
+                    }
+                }
+                @media only screen 
+                and (device-width : 414px) 
+                and (device-height : 736px) {
+                    #pageContainer .mainPageContainer #homeHeader.hide {
+                        transform: translateY(190px)
+                    }
                 }`
             });
             if(document.getElementById("hideDock")) {
@@ -337,13 +525,16 @@ var homeMaker = {
     //Initiate HomeMaker
     init: function() {
         let appSearchContainer = this.makeAppSearchContainer();
-        let timeContainer = this.makeTimeContainer();
-        let searchContainer = this.makeSearchContainer();
+        let headerContainer = this.makeHeaderContainer();
+        this.makeTimeContainer();
+        this.makeStatusBarContainer();
+        this.makeSearchContainer();
         let weatherContainer = this.makeWeatherContainer();
         let dockContainer = this.makeDockContainer();
+        document.body.prepend(appSearchContainer);
         domMaker.domAppender({
             div: loadWidget.contentContainer,
-            children: [appSearchContainer, timeContainer, searchContainer, weatherContainer, dockContainer]
+            children: [headerContainer, weatherContainer, dockContainer]
         });
         homeMaker.checkToHide();
     }
@@ -367,5 +558,13 @@ api.system.observeData(function(newData) {
         homeMaker.populateTimeContainer(document.getElementById("digitalClock"), document.getElementById("day"), newData);
     }
     lpmMode = newData.isLowPowerModeEnabled;
-    loadWidget.populateWithBattery(document.getElementById("statusbarContainer"), api.resources);
+    homeMaker.populateWithBattery(document.getElementById("statusbarContainer"), api.resources);
+});
+
+api.comms.observeData(function(newData) {
+    homeMaker.populateStatusbarContainer(document.getElementById("statusbarContainer"), newData);
+});
+
+api.resources.observeData(function(newData) {
+    homeMaker.populateWithBattery(document.getElementById("statusbarContainer"), newData);
 });

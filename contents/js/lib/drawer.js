@@ -126,7 +126,7 @@ var drawer = {
             type: "div",
             id: "closeButtonContainer",
             className: "drawerButton",
-            innerHTML: "X"
+            innerHTML: "ᐸ"
         });
         mainDiv.addEventListener("click", (e) => this.closeDrawerEvent(e));
         return mainDiv;
@@ -161,6 +161,7 @@ var drawer = {
                     callback: function() {
                         drawer.invokeMenu = false;
                         api.apps.deleteApplication(element.id);
+                        drawer.allApplications = api.apps.allApplications;
                     }
                 },
                 {

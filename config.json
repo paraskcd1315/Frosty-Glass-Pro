@@ -1,0 +1,187 @@
+{
+    "name": "Frosty Glass Pro",
+    "author": "Paras Khanchandani",
+    "size": {
+        "width": "100%",
+        "height": "100%"
+    },
+    "options": [
+        {
+            "type": "title",
+            "text": "Look & Feel"
+        },
+        {
+            "type": "page",
+            "text": "Hide Elements",
+            "options": [
+                {
+                    "type": "title",
+                    "text": "Hide Elements from Widget"
+                },
+                {
+                    "default": false,
+                    "key": "hideStatusbarIcons",
+                    "type": "switch",
+                    "text": "Hide Statusbar Icons"
+                },
+                {
+                    "default": false,
+                    "key": "hideAppLabels",
+                    "type": "switch",
+                    "text": "Hide App Labels"
+                },
+                {
+                    "default": false,
+                    "key": "hideAppBadges",
+                    "type": "switch",
+                    "text": "Hide App Notification Badges"
+                },
+                {
+                    "default": false,
+                    "key": "hideAppShadows",
+                    "type": "switch",
+                    "text": "Hide App Icon Shadows"
+                },
+                {
+                    "default": false,
+                    "key": "hideDrawerButton",
+                    "type": "switch",
+                    "text": "Hide App Drawer Button"
+                },
+                {
+                    "default": false,
+                    "key": "hideMenuBar",
+                    "type": "switch",
+                    "text": "Hide Menu Bar"
+                },
+                {
+                    "type" : "gap"
+                },
+                {
+                    "default": false,
+                    "key": "hideMusic",
+                    "type": "switch",
+                    "text": "Hide Music"
+                },
+                {
+                    "default": false,
+                    "key": "hideNews",
+                    "type": "switch",
+                    "text": "Hide News"
+                }
+            ]
+        },
+        {
+            "type": "page",
+            "text": "Customization",
+            "options": [
+                {
+                    "type": "title",
+                    "text": "Option Menus"
+                },
+                {
+                    "default": "Google",
+                    "key": "searchEngine",
+                    "type": "option",
+                    "options": [
+                        {
+                            "value": "Google",
+                            "text": "Google"
+                        },
+                        {
+                            "value": "Bing",
+                            "text": "Bing"
+                        },
+                        {
+                            "value": "DuckDuckGo",
+                            "text": "DuckDuckGo"
+                        },
+                        {
+                            "value": "Yahoo",
+                            "text": "Yahoo!"
+                        },
+                        {
+                            "value": "Youtube",
+                            "text": "YouTube"
+                        }
+                    ],
+                    "text": "Select Default Search Engine"
+                },
+                {
+                    "default" : "#FFFFFF",
+                    "key" : "textColor",
+                    "type" : "color",
+                    "text" : "Text Color"
+                },
+                {
+                    "default" : "#78788051",
+                    "key" : "panelColor",
+                    "type" : "color",
+                    "text" : "Panels Color"
+                },
+                {
+                    "type": "slider",
+                    "min": 0.0,
+                    "max": 20.0,
+                    "text": "Panel Blur's Intensity",
+                    "default": 20.0,
+                    "key": "blurIntensity"
+                },
+                {
+                    "type": "slider",
+                    "min": 0.0,
+                    "max": 50.0,
+                    "text": "Panel Border Radius",
+                    "default": 10.0,
+                    "key": "borderRadius"
+                }
+            ]
+        },
+        {
+            "type": "page",
+            "text": "Menu/Drawer Customization",
+            "options": [
+                {
+                    "default": false,
+                    "key": "hideAppDrawerLabels",
+                    "type": "switch",
+                    "text": "Hide Drawer's App Labels"
+                },
+                {
+                    "default" : "#1C1C1EE0",
+                    "key" : "backgroundColor",
+                    "type" : "color",
+                    "text" : "Background Color"
+                },
+                {
+                    "default" : "#2C2C2E",
+                    "key" : "secondaryBackgroundColor",
+                    "type" : "color",
+                    "text" : "Secondary Background Color"
+                }
+            ]
+        },
+        {
+            "type" : "gap"
+        },
+        {
+            "type": "title",
+            "text": "Support Links"
+        },
+        {
+            "type" : "link",
+            "text" : "Discord",
+            "url" : "https://discord.gg/cHhz59U"
+        },
+        {
+            "type" : "link",
+            "text" : "Twitter",
+            "url" : "https://twitter.com/ParasKCD"
+        },
+        {
+            "type" : "link",
+            "text" : "Email",
+            "url" : "mailto://badman.thegreat@gmail.com"
+        }
+    ]
+}
