@@ -34,9 +34,16 @@ var musicMaker = {
             children: [musicDecoration, musicArtwork]
         });
     },
+    openMusicPlayingApp: function(newData, musicArtworkContainer) {
+        let appID = newData.nowPlayingApplication.identifier;
+        drawer.openApp(appID);
+    },
     populateMusicHeader: function(musicArtworkContainer, musicInfoContainer, newData) {
         this.makeArtworkStuff(musicArtworkContainer, newData);
         this.makeInfoStuff(musicInfoContainer, newData);
+        musicArtworkContainer.addEventListener("click", function() {
+            musicMaker.openMusicPlayingApp(newData, musicArtworkContainer);
+        });
     },
     makeMusicHeaderContainer: function() {
         const mainDiv = domMaker.init({
@@ -52,6 +59,7 @@ var musicMaker = {
                 id: "musicInfoContainer"
             });
         this.populateMusicHeader(musicArtworkContainer, musicInfoContainer, api.media);
+        
         domMaker.domAppender({
             div: mainDiv,
             children: [musicArtworkContainer, musicInfoContainer]
@@ -61,6 +69,7 @@ var musicMaker = {
     //Music Buttons Container Section
     populateMusicButtonsContainer: function(musicButtonsContainer, newData) {
         musicButtonsContainer.innerHTML = "";
+        let playButtonIcon = newData.isPlaying ? "contents/icons/widgetIcons/pause.png" : "contents/icons/widgetIcons/play.png";
         const reverseButton = domMaker.init({
                 type: "div",
                 id: "reverseButton",
@@ -74,7 +83,7 @@ var musicMaker = {
                 id: "playButton",
                 className: 'musicButtons',
                 innerHTML: `
-                <img id='playButtonIcon' src='${newData.isPlaying ? "contents/icons/widgetIcons/pause.png" : "contents/icons/widgetIcons/play.png"}' />
+                <img id='playButtonIcon' src='${playButtonIcon}' />
                 `
             }),
             nextButton = domMaker.init({
@@ -112,6 +121,9 @@ var musicMaker = {
                 setTimeout(function(){
                     drawer.animateIcon(false, e.target.id);
                 }, 100);
+                setTimeout(function() {
+                    musicMaker.populateMusicButtonsContainer(mainDiv, api.media);
+                }, 350);
                 drawer.movedWhilePressing = false;
             }
         });
@@ -133,6 +145,8 @@ var musicMaker = {
 api.media.observeData(function(newData) {
     if(musicActive) {
         musicMaker.populateMusicHeader(document.getElementById("musicArtworkContainer"), document.getElementById("musicInfoContainer"), newData);
-        musicMaker.populateMusicButtonsContainer(document.getElementById("musicButtonsContainer"), newData);
+        if(!newData.isPlaying) {
+            document.getElementById("musicArtworkContainer").removeEventListener('click', function() {musicMaker.openMusicPlayingApp});
+        }
     }
 });

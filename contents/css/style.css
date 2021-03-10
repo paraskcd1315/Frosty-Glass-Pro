@@ -472,6 +472,18 @@ and (device-height : 667px) {
         width: 40px;
         height: 40px;
     }
+    .mainPageContainer .musicButtonsContainer {
+        transform: translate(-50%, -70%);
+    }
+    .mainPageContainer #musicHeaderContainer #musicArtworkContainer img,
+    .mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration  {
+        width: 150px;
+        height: 150px;
+    }
+    .mainPageContainer .musicButtonsContainer .musicButtons #playButtonIcon {
+        width: 80px;
+        height: 80px;
+    }
 }
 
 /* iPX */

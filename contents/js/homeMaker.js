@@ -40,7 +40,7 @@ var homeMaker = {
     //Time and Date Related Section
     populateTimeContainer: function(digitalClock, day, newData) {
         time.init({
-            refresh: 1000,
+            refresh: 30000,
             twentyfour: newData.isTwentyFourHourTimeEnabled,
             callback: function(time) {
                 digitalClock.innerHTML = time.hour() + ":" + time.minute();
