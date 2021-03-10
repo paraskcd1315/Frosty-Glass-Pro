@@ -347,9 +347,9 @@ body {
 
 .mainPageContainer #musicHeaderContainer {
     position: absolute;
-    bottom: 0;
+    top: 10%;
     left: 50%;
-    transform: translate(-50%, -90%);
+    transform: translate(-50%, -260%);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -374,12 +374,26 @@ body {
     filter: drop-shadow(0 0 10px #1a1b1ca0)
 }
 
+.mainPageContainer #musicHeaderContainer #musicInfoContainer {
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    width: 80%;
+    transform: translateX(-50%);
+}
+
+.mainPageContainer #musicHeaderContainer #musicInfoContainer div {
+    padding: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .mainPageContainer .musicButtonsContainer {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translate(-50%, -90%);
-    top: x;
     display: flex;
 }
 

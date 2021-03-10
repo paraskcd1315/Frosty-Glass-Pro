@@ -48,8 +48,11 @@ var time = {
             return time.d.getSeconds();
         },
         ampm: function() {
-            if(time.twentyfour === true) return ' ';
-            else return (time.d.getHours > 11) ? "pm" : "am";
+            if(time.twentyfour === true) {
+                return ' ';
+            } else { 
+                return (time.funcs.rawHour() >= 12) ? "pm" : "am";
+            }
         },
         date: function() {
             return time.d.getDate();
