@@ -12,41 +12,46 @@
         },
         {
             "type": "page",
-            "text": "Hide Elements",
+            "text": "Customization",
             "options": [
                 {
                     "type": "title",
+                    "text": "Overall Customization"
+                },
+                {
+                    "default" : "#FFFFFF",
+                    "key" : "textColor",
+                    "type" : "color",
+                    "text" : "Text Color"
+                },
+                {
+                    "default" : "#78788051",
+                    "key" : "panelColor",
+                    "type" : "color",
+                    "text" : "Panels Color"
+                },
+                {
+                    "type": "slider",
+                    "min": 0.0,
+                    "max": 20.0,
+                    "text": "Panel Blur's Intensity",
+                    "default": 20.0,
+                    "key": "blurIntensity"
+                },
+                {
+                    "type": "slider",
+                    "min": 0.0,
+                    "max": 50.0,
+                    "text": "Panel Border Radius",
+                    "default": 10.0,
+                    "key": "borderRadius"
+                },
+                {
+                    "type" : "gap"
+                },
+                {
+                    "type": "title",
                     "text": "Hide Elements from Widget"
-                },
-                {
-                    "default": false,
-                    "key": "hideStatusbarIcons",
-                    "type": "switch",
-                    "text": "Hide Statusbar Icons"
-                },
-                {
-                    "default": false,
-                    "key": "hideAppLabels",
-                    "type": "switch",
-                    "text": "Hide App Labels"
-                },
-                {
-                    "default": false,
-                    "key": "hideAppBadges",
-                    "type": "switch",
-                    "text": "Hide App Notification Badges"
-                },
-                {
-                    "default": false,
-                    "key": "hideAppShadows",
-                    "type": "switch",
-                    "text": "Hide App Icon Shadows"
-                },
-                {
-                    "default": false,
-                    "key": "hideDrawerButton",
-                    "type": "switch",
-                    "text": "Hide App Drawer Button"
                 },
                 {
                     "default": false,
@@ -55,7 +60,17 @@
                     "text": "Hide Menu Bar"
                 },
                 {
+                    "default": false,
+                    "key": "hideDrawerButton",
+                    "type": "switch",
+                    "text": "Hide App Drawer Button"
+                },
+                {
                     "type" : "gap"
+                },
+                {
+                    "type": "title",
+                    "text": "Hide Pages from the Widget"
                 },
                 {
                     "default": false,
@@ -73,11 +88,46 @@
         },
         {
             "type": "page",
-            "text": "Customization",
+            "text": "Menu/Drawer Customization",
             "options": [
                 {
                     "type": "title",
-                    "text": "Option Menus"
+                    "text": "Menus/Drawer Customization"
+                },
+                {
+                    "default": false,
+                    "key": "hideAppDrawerLabels",
+                    "type": "switch",
+                    "text": "Hide Drawer's App Labels"
+                },
+                {
+                    "default" : "#1C1C1EE0",
+                    "key" : "backgroundColor",
+                    "type" : "color",
+                    "text" : "Background Color"
+                },
+                {
+                    "default" : "#2C2C2E",
+                    "key" : "secondaryBackgroundColor",
+                    "type" : "color",
+                    "text" : "Secondary Background Color"
+                }
+            ]
+        },
+        {
+            "type": "gap"
+        },
+        {
+            "type": "title",
+            "text": "Page Based Options"
+        },
+        {
+            "type": "page",
+            "text": "Home Customization",
+            "options": [
+                {
+                    "type": "title",
+                    "text": "Customizations for the Home Page"
                 },
                 {
                     "default": "Google",
@@ -108,56 +158,134 @@
                     "text": "Select Default Search Engine"
                 },
                 {
-                    "default" : "#FFFFFF",
-                    "key" : "textColor",
-                    "type" : "color",
-                    "text" : "Text Color"
+                    "type": "comment",
+                    "text": "Tap to choose from a List of Search Engines to redirect when searching from the Searchbar."
                 },
                 {
-                    "default" : "#78788051",
-                    "key" : "panelColor",
-                    "type" : "color",
-                    "text" : "Panels Color"
+                    "type" : "gap"
                 },
                 {
-                    "type": "slider",
-                    "min": 0.0,
-                    "max": 20.0,
-                    "text": "Panel Blur's Intensity",
-                    "default": 20.0,
-                    "key": "blurIntensity"
+                    "type": "title",
+                    "text": "Hide Elements from the Home Page"
                 },
                 {
-                    "type": "slider",
-                    "min": 0.0,
-                    "max": 50.0,
-                    "text": "Panel Border Radius",
-                    "default": 10.0,
-                    "key": "borderRadius"
+                    "default": false,
+                    "key": "hideStatusbarIcons",
+                    "type": "switch",
+                    "text": "Hide Statusbar Icons"
+                },
+                {
+                    "default": false,
+                    "key": "hideAppLabels",
+                    "type": "switch",
+                    "text": "Hide App Labels"
+                },
+                {
+                    "default": false,
+                    "key": "hideAppBadges",
+                    "type": "switch",
+                    "text": "Hide App Notification Badges"
+                },
+                {
+                    "default": false,
+                    "key": "hideAppShadows",
+                    "type": "switch",
+                    "text": "Hide App Icon Shadows"
                 }
             ]
         },
         {
             "type": "page",
-            "text": "Menu/Drawer Customization",
+            "text": "News Customization",
             "options": [
                 {
+                    "type": "title",
+                    "text": "Customizations for the News Page"
+                },
+                {
                     "default": false,
-                    "key": "hideAppDrawerLabels",
+                    "key": "customRSS",
                     "type": "switch",
-                    "text": "Hide Drawer's App Labels"
+                    "text": "Custom RSS Feed"
                 },
                 {
-                    "default" : "#1C1C1EE0",
-                    "key" : "backgroundColor",
-                    "type" : "color",
-                    "text" : "Background Color"
+                    "type": "comment",
+                    "text": "If you want a custom RSS Feed, toggle this option.\nThen Make sure to enter the Custom RSS Feed URL below -"
                 },
                 {
-                    "default" : "#2C2C2E",
-                    "key" : "secondaryBackgroundColor",
-                    "type" : "color",
-                    "text" : "Secondary Background Color"
+                    "type": "text",
+                    "text": "Custom RSS Feed URL",
+                    "default": "",
+                    "key": "customRSSURL",
+                    "placeholder": "https://www.reddit.com/r/news/.rss"
+                },
+                {
+                    "default": "https://www.reddit.com/r/jailbreak/.rss",
+                    "key": "RSSFeeds",
+                    "type": "option",
+                    "options": [
+                        {
+                            "value": "https://www.reddit.com/r/jailbreak/.rss",
+                            "text": "r/Jailbreak"
+                        },
+                        {
+                            "value": "https://www.reddit.com/r/iOSThemes/.rss",
+                            "text": "r/iOSThemes"
+                        },
+                        {
+                            "value": "https://www.reddit.com/r/news/.rss",
+                            "text": "r/News"
+                        },
+                        {
+                            "value": "https://www.wired.com/feed",
+                            "text": "Wired"
+                        },
+                        {
+                            "value": "https://www.theverge.com/rss/frontpage",
+                            "text": "Verge"
+                        },
+                        {
+                            "value": "http://feeds.reuters.com/reuters/scienceNews",
+                            "text": "Science"
+                        },
+                        {
+                            "value": "https://www.nasa.gov/rss/dyn/breaking_news.rss",
+                            "text": "NASA"
+                        },
+                        {
+                            "value": "http://rss.cnn.com/rss/cnn_topstories",
+                            "text": "CNN"
+                        },
+                        {
+                            "value": "http://feeds.feedburner.com/Mashable",
+                            "text": "Mashable"
+                        },
+                        {
+                            "value": "https://www.forbes.com/most-popular/feed/",
+                            "text": "Forbes"
+                        },
+                        {
+                            "value": "https://www.cnet.com/rss/news/",
+                            "text": "CNET"
+                        },
+                        {
+                            "value": "http://www.espn.com/espn/rss/news",
+                            "text": "ESPN"
+                        },
+                        {
+                            "value": "http://www.theonion.com/feeds/rss",
+                            "text": "Onion"
+                        },
+                        {
+                            "value": "http://feeds.feedburner.com/thedailybeast/articles",
+                            "text": "Daily Beast"
+                        }
+                    ],
+                    "text": "Select RSS Feed"
+                },
+                {
+                    "type": "comment",
+                    "text": "If the above Custom RSS toggle is off, you can choose from a list of RSS Feeds from above."
                 }
             ]
         },
@@ -177,11 +305,6 @@
             "type" : "link",
             "text" : "Twitter",
             "url" : "https://twitter.com/ParasKCD"
-        },
-        {
-            "type" : "link",
-            "text" : "Email",
-            "url" : "mailto://badman.thegreat@gmail.com"
         }
     ]
 }

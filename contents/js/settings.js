@@ -38,12 +38,14 @@ var settings = {
             #drawerContainer:before, 
             .menuBar .menuButtons.active:before, 
             #appSearchContainer:before,
+            .mainPageContainer #fullNews:before,
+            .mainPageContainer #newsHeadlines .newsHeadlines .theHeadline:before,
             .mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration:before {
                 border-radius: ${Math.ceil(config.borderRadius)}px;
                 backdrop-filter: blur(${Math.ceil(config.blurIntensity)}px);
                 -webkit-backdrop-filter: blur(${Math.ceil(config.blurIntensity)}px);
             }
-            #drawerContainer {
+            #drawerContainer, .mainPageContainer #fullNews .newsHeader {
                 border-top-left-radius: ${Math.ceil(config.borderRadius)}px;
                 border-top-right-radius: ${Math.ceil(config.borderRadius)}px;
             }
@@ -58,6 +60,8 @@ var settings = {
             .mainPageContainer #weatherContainer .weatherSmall,
             .mainPageContainer #dockContainer .hsApp .hsAappBadge,
             .menuBar .menuButtons,
+            .mainPageContainer #fullNews,
+            .mainPageContainer #newsHeadlines .newsHeadlines .theHeadline,
             .mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration,
             .mainPageContainer #musicHeaderContainer #musicArtworkContainer img {
                 border-radius: ${Math.ceil(config.borderRadius)}px;
@@ -67,7 +71,7 @@ var settings = {
             this.styles.push(this.addStyle({
                 id: "hideStatusbarIcons",
                 str: `
-                #pageContainer #statusbarContainer{
+                .mainPageContainer #homeHeader #topHeader #statusbarContainer{
                     display: none;
                 }`
             }));
@@ -142,6 +146,26 @@ var settings = {
                 #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {
                     display: none;
                 }`
+            }))
+        }
+        if(config.hideMusic) {
+            this.styles.push(this.addStyle({
+                id: "hideMusic",
+                str: `
+                    #musicMenu {
+                        display: none;
+                    }
+                `
+            }))
+        }
+        if(config.hideNews) {
+            this.styles.push(this.addStyle({
+                id: "hideNews",
+                str: `
+                    #newsMenu {
+                        display: none;
+                    }
+                `
             }))
         }
         this.appendToBody();

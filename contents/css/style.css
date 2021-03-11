@@ -5,6 +5,16 @@ body {
     text-shadow: 0 2px 10px #00000061;
 }
 
+#wallpaper {
+    background: url('../../xenEmulationStuff/wallpaper/wall.png');
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
 #appSearchContainer {
     position: fixed;
     top: 50%;
@@ -201,6 +211,7 @@ body {
 #drawerContainer:before, 
 .menuBar .menuButtons.active:before, 
 #appSearchContainer:before,
+.mainPageContainer #fullNews:before,
 .mainPageContainer #musicHeaderContainer #musicArtworkContainer #musicDecoration:before {
     position: absolute;
     content: "";
@@ -409,6 +420,128 @@ body {
     height: 90px;
 }
 
+.mainPageContainer #newsHeader {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mainPageContainer #newsHeader .heading {
+    font-size: 50px;
+    font-weight: bolder;
+}
+
+.mainPageContainer #newsHeadlines {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70vh;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.mainPageContainer #newsHeadlines .newsHeadlines {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.mainPageContainer #newsHeadlines .newsHeadlines .newsHeadlineDate {
+    margin-bottom: 10px;
+    font-size: 10px;
+}
+
+.mainPageContainer #newsHeadlines .newsHeadlines .theHeadline {
+    position: relative;
+    background-color: var(--search-background);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: var(--shadows);
+    font-size: 14px;
+}
+
+.mainPageContainer #newsHeadlines .newsHeadlines .theHeadline:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.mainPageContainer #fullNews {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 400px;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: var(--shadows);
+    transition: 350ms ease;
+    z-index: 5;
+}
+
+.mainPageContainer #fullNews.closed {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+    pointer-events: none;
+}
+
+.mainPageContainer #fullNews .newsHeader {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--background-secondary);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 20px;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: var(--shadows);
+}
+
+.mainPageContainer #fullNews .newsHeader div {
+    padding: 15px;
+    background-color: var(--search-background);
+    border-radius: 10px; 
+    width: 100px;
+    text-align: center;
+    box-shadow: var(--shadows);
+}
+
+.mainPageContainer #fullNews .newsBody {
+    padding: 20px;
+    height: 60%;
+    overflow-y: auto;
+}
+
+.mainPageContainer #fullNews .newsBody .heading {
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.mainPageContainer #fullNews .newsBody .content {
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+.mainPageContainer #fullNews .newsBody .content table tr {
+    display: flex;
+    flex-direction: column;
+}
+
+.mainPageContainer #fullNews .newsBody .content img {
+    width: 100%;
+}
+
+.mainPageContainer #fullNews .newsBody .content a {
+    color: var(--text-color);
+}
+
 /* iP5 */
 @media only screen 
 and (device-width : 320px) 
@@ -452,6 +585,13 @@ and (device-height : 568px) {
         width: 80px;
         height: 80px;
     }
+    .mainPageContainer #fullNews .newsHeader div {
+       padding: 3px;
+    }
+    .mainPageContainer #newsHeadlines {
+        height: 55vh;
+        margin-bottom: 30px;
+    }
 }
 
 /* 6s */
@@ -484,6 +624,13 @@ and (device-height : 667px) {
         width: 80px;
         height: 80px;
     }
+    .mainPageContainer #fullNews .newsHeader div {
+       padding: 10px;
+    }
+    .mainPageContainer #newsHeadlines {
+        height: 65vh;
+        margin-bottom: 20px;
+    }
 }
 
 /* iPX */
@@ -507,6 +654,9 @@ and (device-height : 812px) {
         width: 40px;
         height: 40px;
     }
+    .mainPageContainer #fullNews .newsHeader div {
+       padding: 10px;
+    }
 }
 
 /* 6sPlus */
@@ -519,6 +669,13 @@ and (device-height : 736px) {
     .menuBar .menuButtons {
         width: 40px;
         height: 40px;
+    }
+    .mainPageContainer #fullNews .newsHeader div {
+       padding: 15px;
+    }
+    .mainPageContainer #newsHeadlines {
+        height: 65vh;
+        margin-bottom: 20px;
     }
 }
 
@@ -543,6 +700,9 @@ and (device-height : 844px) {
         width: 40px;
         height: 40px;
     }
+    .mainPageContainer #fullNews .newsHeader div {
+       padding: 10px;
+    }
 }
 
 /* 12 mini */
@@ -565,6 +725,13 @@ and (device-height : 780px) {
     .menuBar .menuButtons {
         width: 40px;
         height: 40px;
+    }
+    .mainPageContainer #fullNews .newsHeader div {
+       padding: 10px;
+    }
+    .mainPageContainer #newsHeadlines {
+        height: 65vh;
+        margin-bottom: 15px;
     }
 }
 

@@ -10,8 +10,8 @@ var loadWidget = {
     loadMusic: function() {
         musicMaker.init();
     },
-    newsMaker: function() {
-        musicMaker.init();
+    loadNews: function() {
+        newsMaker.init();
     },
     init: function(params) {
         this.contentContainer = params.contentContainer;
@@ -64,6 +64,11 @@ var loadWidget = {
                         break;
                     case "newsMenu":
                         e.target.classList.add("active");
+                        homeActive = false;
+                        musicActive = false;
+                        setTimeout(() => {
+                            loadWidget.loadNews();
+                        }, 360);
                         break;
                 }
                 setTimeout(() => {
