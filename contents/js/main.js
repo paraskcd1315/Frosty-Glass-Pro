@@ -3,12 +3,39 @@ var musicActive = document.getElementById("musicMenu").classList.contains("activ
 var lpmMode = false;
 
 var loadWidget = {
+    width: window.innerWidth,
     contentContainer: "",
     loadHome: function() {
-        homeMaker.init();
+        if(this.width <= 500) {
+            homeMaker.init();
+        } else {
+            if(document.getElementById("weatherContainer")) {
+                document.getElementById("weatherContainer").classList.remove("closed");
+                const weatherDiv = domMaker.init({
+                        type: "div",
+                        id: "weatherInfo",
+                        className: 'weatherBig'
+                    }),
+                    weatherDiv2 = domMaker.init({
+                        type: "div",
+                        id: "weatherInfo2",
+                        className: 'weatherSmall'
+                    });
+                homeMaker.populateWeatherContainer(weatherDiv, weatherDiv2, api.weather);
+                domMaker.domAppender({
+                    div: document.getElementById("weatherContainer"),
+                    children: [weatherDiv, weatherDiv2]
+                });
+            } else {
+                homeMaker.init();
+            }
+        }
     },
     loadMusic: function() {
         musicMaker.init();
+        if(document.getElementById("weatherContainer")) {
+            document.getElementById("weatherContainer").classList.remove("closed");
+        }
     },
     loadNews: function() {
         newsMaker.init();
@@ -35,7 +62,14 @@ var loadWidget = {
         });
         params.menuContainer.addEventListener("touchend", (e) => {
             if(e.target.id) {
-                loadWidget.contentContainer.classList.add("hide");
+                if(loadWidget.width <= 500) {
+                    loadWidget.contentContainer.classList.add("hide");
+                    if(document.getElementById("appSearchContainer")) {
+                        document.body.removeChild(document.getElementById("appSearchContainer"));
+                    }
+                } else {
+                    document.getElementById("weatherContainer").classList.add("closed");
+                }
                 for(let i = 0; i < params.menuContainer.children.length; i++) {
                     let child = params.menuContainer.children[i];
                     if(child.classList.contains("active")) {
@@ -43,7 +77,11 @@ var loadWidget = {
                     }
                 }
                 setTimeout(() => {
-                    loadWidget.contentContainer.innerHTML = "";
+                    if(loadWidget.width <= 500) {
+                        loadWidget.contentContainer.innerHTML = "";
+                    } else {
+                        document.getElementById("weatherContainer").innerHTML = "";
+                    }
                 }, 300);
                 switch(e.target.id) {
                     case "homeMenu": 

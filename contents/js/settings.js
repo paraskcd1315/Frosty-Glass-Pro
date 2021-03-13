@@ -168,6 +168,36 @@ var settings = {
                 `
             }))
         }
+        if(config.hideMusicButtons) {
+            this.styles.push(this.addStyle({
+                id: "hideNews",
+                str: `
+                    .mainPageContainer .musicButtonsContainer  {
+                        display: none;
+                    }
+                `
+            }))
+        }
+        if(config.hideMusicInfo) {
+            this.styles.push(this.addStyle({
+                id: "hideNews",
+                str: `
+                    .mainPageContainer #musicHeaderContainer #musicInfoContainer {
+                        display: none;
+                    }
+                `
+            }))
+        }
+        if(config.hideArtwork) {
+            this.styles.push(this.addStyle({
+                id: "hideNews",
+                str: `
+                    .mainPageContainer #musicHeaderContainer #musicArtworkContainer{
+                        display: none;
+                    }
+                `
+            }))
+        }
         this.appendToBody();
     }
 }

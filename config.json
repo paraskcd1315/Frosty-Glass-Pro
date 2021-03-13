@@ -196,6 +196,34 @@
         },
         {
             "type": "page",
+            "text": "Music Customization",
+            "options": [
+                {
+                    "type": "title",
+                    "text": "Customizations for the Music Page"
+                },
+                {
+                    "default": false,
+                    "key": "hideArtwork",
+                    "type": "switch",
+                    "text": "Hide Artwork"
+                },
+                {
+                    "default": false,
+                    "key": "hideMusicInfo",
+                    "type": "switch",
+                    "text": "Hide Music Info"
+                },
+                {
+                    "default": false,
+                    "key": "hideMusicButtons",
+                    "type": "switch",
+                    "text": "Hide Music Buttons"
+                }
+            ]
+        },
+        {
+            "type": "page",
             "text": "News Customization",
             "options": [
                 {

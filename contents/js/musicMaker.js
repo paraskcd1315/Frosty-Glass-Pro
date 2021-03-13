@@ -123,7 +123,7 @@ var musicMaker = {
                 }, 100);
                 setTimeout(function() {
                     musicMaker.populateMusicButtonsContainer(mainDiv, api.media);
-                }, 350);
+                }, 500);
                 drawer.movedWhilePressing = false;
             }
         });
@@ -134,10 +134,17 @@ var musicMaker = {
     init: function() {
         let musicHeaderContainer = this.makeMusicHeaderContainer();
         let musicButtonsContainer = this.makeMusicButtonsContainer();
-        domMaker.domAppender({
-            div: loadWidget.contentContainer,
-            children: [musicHeaderContainer, musicButtonsContainer]
-        });
+        if(loadWidget.width <= 500) {
+            domMaker.domAppender({
+                div: loadWidget.contentContainer,
+                children: [musicHeaderContainer, musicButtonsContainer]
+            });
+        } else {
+            domMaker.domAppender({
+                div: document.getElementById("weatherContainer"),
+                children: [musicHeaderContainer, musicButtonsContainer]
+            });
+        }
     }
 }
 

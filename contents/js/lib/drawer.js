@@ -126,7 +126,7 @@ var drawer = {
             type: "div",
             id: "closeButtonContainer",
             className: "drawerButton",
-            innerHTML: "ᐸ"
+            innerHTML: "<div></div>"
         });
         mainDiv.addEventListener("click", (e) => this.closeDrawerEvent(e));
         return mainDiv;

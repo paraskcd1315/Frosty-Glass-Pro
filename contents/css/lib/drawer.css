@@ -14,7 +14,7 @@ html, body {
 
 :root {
     --text-color: #fff;
-    --background-color: #1c1c1ee0;
+    --background-color: #1a2b2ce0;
     --background-secondary: #2c2c2e;
     --search-background: #78788051;
     --shadows: 0px 5px 10px #1a1b1ca0
@@ -55,19 +55,25 @@ html, body {
     display: flex;
     height: 100px;
     flex-direction: row;
-    background-color: var(--background-secondary);
     justify-content: start;
-    box-shadow: var(--shadows);
 }
 
 #drawer #drawerHeader #closeButtonContainer {
-    margin: auto 10px 20px;
-    padding: 10px;
-    width: 20px;
-    height: 20px;
-    background-color: var(--search-background);
+    position:absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#drawer #drawerHeader #closeButtonContainer div {
+    width: 30px;
+    height: 30px;
     border-radius: 99px;
-    box-shadow: var(--shadows);
+    border: solid 1px var(--text-color);
+    box-shadow: 0 0 15px var(--text-color);
 }
 
 #drawer #drawerHeader #drawerSearchContainer {
@@ -78,18 +84,18 @@ html, body {
     border-radius: 20px;
     padding-left: 20px;
     box-shadow: var(--shadows);
-    margin-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #drawer #drawerContent {
-    margin-top: 80px;
-    margin-left: -10px;
+    margin-top: 50px;
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-scroll-snap-type: mandatory;
     scroll-snap-type: x mandatory;
     scroll-padding: 0vh;
-    margin-left: 1px;
 }
 
 #drawer #drawerContent .drawerPages {
@@ -126,22 +132,19 @@ and (device-height : 780px) {
     .inputTextField {
         height: 30px;
     }
-    #drawer #drawerHeader #closeButtonContainer {
-        padding: 5px 10px;
-    }
     #drawer #drawerHeader {
         height: 80px;
     }
     #drawer #drawerContent {
-        margin-top: 50px;
+        margin-top: 20px;
     }
     #drawer #drawerContent .drawerPages {
         grid-template-rows: 20vw 20vw 20vw 20vw 20vw 25vw;
         grid-row-gap: 25px;
     }
     #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
     }
     #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {
         font-size: 10px;
@@ -155,25 +158,22 @@ and (device-height : 568px) {
     .inputTextField {
         height: 30px;
     }
-    #drawer #drawerHeader #closeButtonContainer {
-        padding: 5px 10px;
-    }
     #drawer #drawerHeader {
-        height: 80px;
+        height: 70px;
     }
     #drawer #drawerContent {
-        margin-top: 25px;
+        margin-top: 10px;
     }
     #drawer #drawerContent .drawerPages {
-        grid-template-rows: 20vw 20vw 20vw 20vw 20vw 20vw;
+        grid-template-rows: 18vw 18vw 18vw 18vw 18vw 18vw;
         grid-row-gap: 10px;
     }
     #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
     }
     #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {
-        font-size: 10px;
+        font-size: 9px;
     }
 }
 
@@ -181,8 +181,34 @@ and (device-height : 568px) {
 @media only screen 
 and (device-width : 375px) 
 and (device-height : 667px) {
+    #drawer #drawerHeader {
+        height: 80px;
+    }
     #drawer #drawerContent {
-        margin-top: 25px;
+        margin-top: 5px;
+    }
+    #drawer #drawerContent .drawerPages {
+        grid-template-rows: 20vw 20vw 20vw 20vw 20vw 25vw;
+        grid-row-gap: 10px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
+        width: 50px;
+        height: 50px;
+    }
+    #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {
+        font-size: 8px;
+    }
+}
+
+/* 6sPlus */
+@media only screen 
+and (device-width : 414px) 
+and (device-height : 736px) {
+    #drawer #drawerHeader {
+        height: 80px;
+    }
+    #drawer #drawerContent {
+        margin-top: 10px;
     }
     #drawer #drawerContent .drawerPages {
         grid-template-rows: 20vw 20vw 20vw 20vw 20vw 25vw;
@@ -193,20 +219,7 @@ and (device-height : 667px) {
         height: 55px;
     }
     #drawer #drawerContent .drawerPages .drawerApp .drawerAppName {
-        font-size: 10px;
-    }
-}
-
-/* 6sPlus */
-@media only screen 
-and (device-width : 414px) 
-and (device-height : 736px) {
-    #drawer #drawerContent {
-        margin-top: 15px;
-    }
-    #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
-        width: 60px;
-        height: 60px;
+        font-size: 8px;
     }
 }
 
@@ -214,6 +227,9 @@ and (device-height : 736px) {
 @media only screen 
 and (device-width : 375px) 
 and (device-height : 812px) {
+    #drawer #drawerContent {
+        margin-top: 40px;
+    }
     #drawer #drawerContent .drawerPages .drawerApp .drawerAppIcon {
         width: 60px;
         height: 60px;
@@ -311,7 +327,7 @@ and (device-height : 768px) {
         height: 13vh;
     }
     #drawer #drawerHeader #closeButtonContainer {
-        padding: 20px 25px;
+        height: 70px;
     }
     #drawer #drawerHeader #drawerSearchContainer {
         width: 50%;
