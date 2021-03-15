@@ -134,17 +134,10 @@ var musicMaker = {
     init: function() {
         let musicHeaderContainer = this.makeMusicHeaderContainer();
         let musicButtonsContainer = this.makeMusicButtonsContainer();
-        if(loadWidget.width <= 500) {
-            domMaker.domAppender({
-                div: loadWidget.contentContainer,
-                children: [musicHeaderContainer, musicButtonsContainer]
-            });
-        } else {
-            domMaker.domAppender({
-                div: document.getElementById("weatherContainer"),
-                children: [musicHeaderContainer, musicButtonsContainer]
-            });
-        }
+        domMaker.domAppender({
+            div: loadWidget.contentContainer,
+            children: [musicHeaderContainer, musicButtonsContainer]
+        });
     }
 }
 

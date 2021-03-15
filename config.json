@@ -333,6 +333,18 @@
             "type" : "link",
             "text" : "Twitter",
             "url" : "https://twitter.com/ParasKCD"
+        },
+        {
+            "type" : "gap"
+        },
+        {
+            "type": "title",
+            "text": "Buy Me Coffee :)"
+        },
+        {
+            "type" : "link",
+            "text" : "PayPal",
+            "url" : "https://paypal.me/paraskcd"
         }
     ]
 }

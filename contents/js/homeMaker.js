@@ -1,5 +1,4 @@
 var homeMaker = {
-    width: window.innerWidth,
     makeHeaderContainer: function() {
         const mainDiv = domMaker.init({
                 type: "div",
@@ -19,21 +18,19 @@ var homeMaker = {
             children: [this.makeTimeContainer(), this.makeStatusBarContainer()]
         });
         bottomHeader.appendChild(this.makeSearchContainer());
-        if(this.width <= 500) {
-            topHeader.addEventListener("click", function(e) {
-                if(e.target.id === "topHeader") {
-                    if(!e.target.parentElement.nextElementSibling.classList.contains("closed")) {
-                        e.target.parentElement.classList.add("hide");
-                        e.target.parentElement.nextElementSibling.classList.add("closed");
-                        e.target.parentElement.nextElementSibling.nextElementSibling.classList.add("closed");
-                    } else {
-                        e.target.parentElement.classList.remove("hide");
-                        e.target.parentElement.nextElementSibling.classList.remove("closed");
-                        e.target.parentElement.nextElementSibling.nextElementSibling.classList.remove("closed");
-                    }
+        topHeader.addEventListener("click", function(e) {
+            if(e.target.id === "topHeader") {
+                if(!e.target.parentElement.nextElementSibling.classList.contains("closed")) {
+                    e.target.parentElement.classList.add("hide");
+                    e.target.parentElement.nextElementSibling.classList.add("closed");
+                    e.target.parentElement.nextElementSibling.nextElementSibling.classList.add("closed");
+                } else {
+                    e.target.parentElement.classList.remove("hide");
+                    e.target.parentElement.nextElementSibling.classList.remove("closed");
+                    e.target.parentElement.nextElementSibling.nextElementSibling.classList.remove("closed");
                 }
-            });
-        }
+            }
+        });
         domMaker.domAppender({
             div: mainDiv,
             children: [topHeader, bottomHeader]
@@ -350,7 +347,7 @@ var homeMaker = {
         const mainDiv = domMaker.init({
                 type: "div",
                 id: "weatherContainer",
-                className: homeMaker.width <= 500 ? "closed" : ""
+                className: "closed"
             }),
             weatherDiv = domMaker.init({
                 type: "div",
@@ -514,66 +511,6 @@ var homeMaker = {
                 and (device-height : 736px) {
                     #pageContainer .mainPageContainer #homeHeader.hide {
                         transform: translateY(190px)
-                    }
-                }
-                /*portrait iPad Third & Fourth Generation, iPad Air 1 & 2, iPad Mini 2 & 3, iPad Mini*/
-                @media only screen 
-                and (device-width : 768px) 
-                and (device-height : 1024px) {
-                    .mainPageContainer #dockContainer.closed .hsApp:nth-last-child(-n+${localstore["dockFavs"].length - 4}) {
-                        opacity: unset;
-                        pointer-events: unset;
-                    }
-                    #pageContainer .mainPageContainer #homeHeader.hide {
-                        transform: unset;
-                    }
-                    #pageContainer .mainPageContainer #dockContainer.closed{
-                        transform: unset;
-                    }
-                }
-                /*landscape iPad Third & Fourth Generation, iPad Air 1 & 2, iPad Mini 2 & 3, iPad Mini*/
-                @media only screen 
-                and (device-width : 1024px) 
-                and (device-height : 768px) {
-                    .mainPageContainer #dockContainer.closed .hsApp:nth-last-child(-n+${localstore["dockFavs"].length - 4}) {
-                        opacity: unset;
-                        pointer-events: unset;
-                    }
-                    #pageContainer .mainPageContainer #homeHeader.hide {
-                        transform: unset;
-                    }
-                    #pageContainer .mainPageContainer #dockContainer.closed{
-                        transform: unset;
-                    }
-                }
-                /*portrait iPad Pro*/
-                @media only screen 
-                and (device-width : 1024px) 
-                and (device-height : 1366px) {
-                    .mainPageContainer #dockContainer.closed .hsApp:nth-last-child(-n+${localstore["dockFavs"].length - 4}) {
-                        opacity: unset;
-                        pointer-events: unset;
-                    }
-                    #pageContainer .mainPageContainer #homeHeader.hide {
-                        transform: unset;
-                    }
-                    #pageContainer .mainPageContainer #dockContainer.closed{
-                        transform: unset;
-                    }
-                }
-                /*landscape iPad Pro*/
-                @media only screen 
-                and (device-width : 1366px) 
-                and (device-height : 1024px) {
-                    .mainPageContainer #dockContainer.closed .hsApp:nth-last-child(-n+${localstore["dockFavs"].length - 4}) {
-                        opacity: unset;
-                        pointer-events: unset;
-                    }
-                    #pageContainer .mainPageContainer #homeHeader.hide {
-                        transform: unset;
-                    }
-                    #pageContainer .mainPageContainer #dockContainer.closed{
-                        transform: unset;
                     }
                 }`
             });
